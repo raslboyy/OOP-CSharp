@@ -1,3 +1,4 @@
+using System;
 using Isu.Services;
 using Isu.Tools;
 using NUnit.Framework;
@@ -11,14 +12,31 @@ namespace Isu.Tests
         [SetUp]
         public void Setup()
         {
-            //TODO: implement
-            _isuService = null;
+            _isuService = new IsuService();
+            var groups = new GroupName[5, 5];
+            for (int i = 1; i <= 4; i++)
+            {
+                for (int j = 1; j <= 4; j++)
+                {
+                    groups[i, j] = new GroupName((CourseNumber) i, (byte) j);
+                    _isuService.AddGroup(groups[i, j]);
+                }
+            }
+
+            var rand = new Random();
+            for (int i = 0; i < 100; i++)
+                _isuService.AddStudent(_isuService.FindGroup(groups[rand.Next(1, 5), rand.Next(1, 5)]), "Student" + i.ToString());
+
+            _isuService.AddStudent(_isuService.FindGroup(groups[2, 1]), "Ruslan Khakimov");
         }
 
         [Test]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
-            Assert.Fail();
+            if (_isuService.FindGroup(new GroupName(CourseNumber.Second, 1)).FindStudent("Ruslan Khakimov") == null)
+                Assert.Fail();
+            if (_isuService.FindStudent("Ruslan Khakimov").GetGroupName() != new GroupName("M3201"))
+                Assert.Fail();
         }
 
         [Test]
@@ -26,7 +44,9 @@ namespace Isu.Tests
         {
             Assert.Catch<IsuException>(() =>
             {
-                
+                Group group = _isuService.FindGroup(new GroupName("M3201"));
+                for (int i = 100; i < 200; i++)
+                    group.AddStudent(new Student("Student" + i.ToString(), group.GetGroupName()));
             });
         }
 
@@ -35,17 +55,18 @@ namespace Isu.Tests
         {
             Assert.Catch<IsuException>(() =>
             {
-
+                var groupM32245 = new Group(new GroupName("M32245"));
+                var groupM3000 = new Group(new GroupName("M3000"));
             });
         }
 
         [Test]
         public void TransferStudentToAnotherGroup_GroupChanged()
         {
-            Assert.Catch<IsuException>(() =>
-            {
-
-            });
+            Student me = _isuService.FindStudent("Ruslan Khakimov");
+            Group myNewGroup = _isuService.FindGroup(new GroupName("M3202"));
+            _isuService.ChangeStudentGroup(me, myNewGroup);
+            Assert.AreEqual(me.GetGroupName(), myNewGroup.GetGroupName());
         }
     }
 }
