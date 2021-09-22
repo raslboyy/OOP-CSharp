@@ -13,6 +13,7 @@ namespace Isu.Services
         }
 
         private static int MaxStudentPerGroup => 20;
+        public static int GetMaxStudentPerGroup() => MaxStudentPerGroup;
         public void AddStudent(Student student)
         {
             if (_students.Count == MaxStudentPerGroup)
@@ -39,6 +40,7 @@ namespace Isu.Services
             return _students.FirstOrDefault(student => student.Name == name);
         }
 
+        public Student FindStudent(int id) => _students.Find(student => student.GetId() == id);
         public GroupName GetGroupName() => _groupName;
         public CourseNumber GetCourseNumber() => _groupName.GetCourseNumber();
 
@@ -51,6 +53,5 @@ namespace Isu.Services
         public override int GetHashCode() => _groupName.GetHashCode();
 
         public int GetSize() => _students.Count;
-        public int GetMaxStudentPerGroup() => MaxStudentPerGroup;
     }
 }

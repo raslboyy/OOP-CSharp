@@ -44,7 +44,7 @@ namespace Isu.Tests
         {
             Group group = _isuService.FindGroup(new GroupName("M3201"));
             int count = 100;
-            while (group.GetSize() < group.GetMaxStudentPerGroup())
+            while (group.GetSize() < Group.GetMaxStudentPerGroup())
                 group.AddStudent(new Student("Student" + (count++).ToString(), group.GetGroupName()));
             Assert.Catch<IsuException>(() =>
             {

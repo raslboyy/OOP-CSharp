@@ -27,15 +27,9 @@ namespace Isu.Services
         {
             foreach (Group @group in _groups)
             {
-                try
-                {
-                    Student student = @group.GetStudent(id);
+                Student student = @group.FindStudent(id);
+                if (!(student is null))
                     return student;
-                }
-                catch
-                {
-                    // ignored
-                }
             }
 
             throw new IsuException("The Isu does not contain a student with the specified id.", new GroupException());
