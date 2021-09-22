@@ -42,7 +42,8 @@ namespace Isu.Services
 
         public List<Student> FindStudents(GroupName name)
         {
-            return FindGroup(name) is null ? null : FindGroup(name).GetStudents();
+            Group group = FindGroup(name);
+            return @group?.GetStudents();
         }
 
         public List<Student> FindStudents(CourseNumber courseNumber)
