@@ -4,10 +4,18 @@ namespace Isu.Tools
 {
     public class GroupException : IsuException
     {
-        public GroupException() { }
+        public GroupException()
+        {
+        }
+
         public GroupException(string message)
-            : base(message) { }
+            : base(message)
+        {
+        }
+
         public GroupException(string message, Exception innerException)
-            : base(message, innerException) { }
+            : base(message, innerException)
+        {
+        }
     }
 }
