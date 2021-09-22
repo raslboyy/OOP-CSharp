@@ -43,5 +43,8 @@ namespace Isu.Services
         public bool Equals(Group other) => _name.Equals(other._name);
 
         public override int GetHashCode() => _name.GetHashCode();
+
+        public int GetSize() => _students.Count;
+        public int GetMaxStudentPerGroup() => MaxStudentPerGroup;
     }
 }

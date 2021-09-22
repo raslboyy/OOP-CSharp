@@ -42,11 +42,13 @@ namespace Isu.Tests
         [Test]
         public void ReachMaxStudentPerGroup_ThrowException()
         {
+            Group group = _isuService.FindGroup(new GroupName("M3201"));
+            int count = 100;
+            while (group.GetSize() < group.GetMaxStudentPerGroup())
+                group.AddStudent(new Student("Student" + (count++).ToString(), group.GetGroupName()));
             Assert.Catch<IsuException>(() =>
             {
-                Group group = _isuService.FindGroup(new GroupName("M3201"));
-                for (int i = 100; i < 200; i++)
-                    group.AddStudent(new Student("Student" + i.ToString(), group.GetGroupName()));
+                group.AddStudent(new Student("Student" + count.ToString(), group.GetGroupName()));
             });
         }
 
