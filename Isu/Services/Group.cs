@@ -37,10 +37,7 @@ namespace Isu.Services
             return student;
         }
 
-        public Student FindStudent(string name)
-        {
-            return _students.FirstOrDefault(student => student.Name == name);
-        }
+        public Student FindStudent(string name) => _students.Find(student => student.Name == name);
 
         public Student FindStudent(int id) => _students.Find(student => student.GetId() == id);
         public GroupName GetGroupName() => _groupName;

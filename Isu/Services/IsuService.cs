@@ -37,7 +37,14 @@ namespace Isu.Services
 
         public Student FindStudent(string name)
         {
-            return (from @group in _groups where @group.FindStudent(name) != null select @group.FindStudent(name)).FirstOrDefault();
+            foreach (Group @group in _groups)
+            {
+                Student student = @group.FindStudent(name);
+                if (!(student is null))
+                    return student;
+            }
+
+            return null;
         }
 
         public List<Student> FindStudents(GroupName name)
@@ -56,7 +63,7 @@ namespace Isu.Services
 
         public Group FindGroup(GroupName name)
         {
-            return _groups.FirstOrDefault(@group => @group.GetGroupName() == name);
+            return _groups.Find(@group => @group.GetGroupName() == name);
         }
 
         public List<Group> FindGroups(CourseNumber courseNumber)
