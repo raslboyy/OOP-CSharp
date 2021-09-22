@@ -1,7 +1,6 @@
 using System;
-using Isu.Tools;
 
-namespace Isu.Services
+namespace Isu.Tools
 {
     public class GroupException : IsuException
     {
