@@ -25,10 +25,13 @@ namespace Isu.Services
 
         public Student GetStudent(int id)
         {
-            foreach (Student student in _students.Where(student => student.GetId() == id))
-                return student;
+            Student student = _students.Find(student => student.GetId() == id);
+            if (student is null)
+            {
+                throw new GroupException("The group does not contain a student with the specified id.");
+            }
 
-            throw new GroupException("The group does not contain a student with the specified id.");
+            return student;
         }
 
         public Student FindStudent(string name)
