@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Isu.Tools;
+
 namespace Isu.Services
 {
     public class Group
@@ -27,18 +29,10 @@ namespace Isu.Services
         public Student GetStudent(int id)
         {
             Student student = _students.Find(student => student.GetId() == id);
-            if (student is null)
-            {
-                throw new GroupException("The group does not contain a student with the specified id.");
-            }
-
-            return student;
+            return student ?? throw new GroupException("The group does not contain a student with the specified id.");
         }
 
-        public Student FindStudent(string name)
-        {
-            return _students.FirstOrDefault(student => student.Name == name);
-        }
+        public Student FindStudent(string name) => _students.Find(student => student.Name == name);
 
         public Student FindStudent(int id) => _students.Find(student => student.GetId() == id);
         public GroupName GetGroupName() => _groupName;

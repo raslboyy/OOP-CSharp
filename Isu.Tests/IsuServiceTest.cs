@@ -33,10 +33,9 @@ namespace Isu.Tests
         [Test]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
-            if (_isuService.FindGroup(new GroupName(CourseNumber.Second, 1)).FindStudent("Ruslan Khakimov") == null)
-                Assert.Fail();
-            if (_isuService.FindStudent("Ruslan Khakimov").GetGroupName() != new GroupName("M3201"))
-                Assert.Fail();
+            Assert.IsNotNull(_isuService.FindGroup(new GroupName(CourseNumber.Second, 1)).FindStudent("Ruslan Khakimov"));
+            
+            Assert.AreNotEqual(_isuService.FindStudent("Ruslan Khakimov").GetGroupName(), new GroupName("M3201"));
         }
 
         [Test]
