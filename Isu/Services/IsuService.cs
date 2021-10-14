@@ -28,7 +28,7 @@ namespace Isu.Services
             foreach (Group @group in _groups)
             {
                 Student student = @group.FindStudent(id);
-                if (!(student is null))
+                if (student is not null)
                     return student;
             }
 
@@ -40,7 +40,7 @@ namespace Isu.Services
             foreach (Group @group in _groups)
             {
                 Student student = @group.FindStudent(name);
-                if (!(student is null))
+                if (student is not null)
                     return student;
             }
 
