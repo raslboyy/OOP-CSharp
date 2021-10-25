@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Isu.Essence;
 
 namespace Isu.Services
 {

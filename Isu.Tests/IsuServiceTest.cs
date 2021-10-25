@@ -1,4 +1,5 @@
 using System;
+using Isu.Essence;
 using Isu.Services;
 using Isu.Tools;
 using NUnit.Framework;
