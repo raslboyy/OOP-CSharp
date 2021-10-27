@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using Isu.Essence;
-using IsuExtra.Essence;
-using IsuExtra.Essence.Course;
-using IsuExtra.Essence.Time;
-using IsuExtra.Essence.UniversityClass;
+using IsuExtra.Entity.Course;
+using IsuExtra.Entity.UniversityClass;
 
 namespace IsuExtra.Services
 {

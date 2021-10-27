@@ -1,127 +1,68 @@
 using System.Collections.Generic;
+using System.Linq;
+using Shops.Entity;
+using Shops.Entity.ForCustomer;
+using Shops.Entity.ForProduct;
+using Shops.Entity.ForShop;
 using Shops.Essence;
 using Shops.Essence.Customers;
-using Shops.Essence.Shops;
-using Shops.Essence.Shops.Worker;
-using Shops.Tools.Service;
 
 namespace Shops.Services
 {
     public class Service : ICustomerService, IShopService
     {
-        private readonly Dictionary<int, Cart> _shopCarts;
-        private readonly Dictionary<int, Cart> _customerCarts;
-        private readonly Dictionary<int, Shop> _shops;
-        private readonly Dictionary<int, Customer> _customers;
+        private readonly List<IShop> _shops;
 
         public Service()
         {
-            _shopCarts = new Dictionary<int, Cart>();
-            _customerCarts = new Dictionary<int, Cart>();
-            _shops = new Dictionary<int, Shop>();
-            _customers = new Dictionary<int, Customer>();
+            _shops = new List<IShop>();
         }
 
-        public CustomerName RegisterCustomer(string name, int balance) => AddCustomer(new Customer(name, balance)).Name;
+        public ICustomer RegisterCustomer(string name, int balance) => new Customer(name, balance);
 
-        public CustomerName RegisterOnlineCustomer(string name, int balance, Address address) =>
-            AddCustomer(new OnlineCustomer(name, balance, address)).Name;
+        public ICustomer RegisterOnlineCustomer(string name, int balance, Address address) =>
+            new OnlineCustomer(name, balance, address);
 
-        public CustomerName GetCustomerName(string name) => GetCustomer(new CustomerName(name)).Name;
-
-        public void AddToCustomerCart(CustomerName customerName, string productName, uint count) =>
-            _customerCarts[customerName.GetHashCode()].Add(productName, count);
-
-        public ShopName FindCheapestShop(CustomerName customerName)
+        public IShop FindCheapestShop(params NeededProductAndCount[] list)
         {
-            Cart cart = _customerCarts[customerName.GetHashCode()];
             uint? min = null;
-            ShopName cheapestShop = null;
-            foreach ((int key, Shop shop) in _shops)
+            IShop cheapestShop = null;
+            foreach (IShop shop in _shops)
             {
-                uint? coast = new Assistant(shop).GetCoast(cart);
+                uint? coast = new Assistant(shop).GetCoast(list);
                 if (coast == null || (min != null && !(coast < min))) continue;
                 min = coast;
-                cheapestShop = shop.Name;
+                cheapestShop = shop;
             }
 
             return cheapestShop;
         }
 
-        public int RequestBalance(CustomerName customerName) => _customers[customerName.GetHashCode()].Balance;
+        public IProduct FindProduct(IShop shop, string name) => shop.StorageWorker.FindProduct(name);
 
-        public bool Buy(CustomerName customerName, ShopName shopName)
+        public bool Buy(ICustomer customer, IShop shop, params NeededProductAndCount[] list)
         {
-            Customer customer = _customers[customerName.GetHashCode()];
-            Cart cart = _customerCarts[customerName.GetHashCode()];
-            Shop shop = _shops[shopName.GetHashCode()];
-            var assistant = new Assistant(shop);
-
-            bool result = assistant.Work(customer, cart);
-            if (result)
-                cart.Clear();
-            return result;
+            var productList = list.Select(item => new Product(item.Product.Name, item.Product.Price, item.Count)).Cast<IProduct>().ToList();
+            return new Assistant(shop).Work(customer, productList.ToArray());
         }
 
-        public ShopName RegisterShop(string name, Address address) => AddShop(new Shop(name, address)).Name;
+        public IShop RegisterShop(string name, Address address) => AddShop(new Shop(name, address));
 
-        public ShopName GetShopName(string name) => GetShop(new ShopName(name)).Name;
+        public void Replenishment(IShop shop, params IProduct[] list) => new Manager(shop).Work(list);
 
-        public void AddToShopCart(ShopName shopName, string productName, uint count, uint price) =>
-            _shopCarts[shopName.GetHashCode()].Add(productName, count, price);
+        public void ChangePrice(IShop shop, string productName, uint newPrice) =>
+            Replenishment(shop, new Product(productName, newPrice, 0));
 
-        public void Replenishment(ShopName shopName)
+        public uint GetPrice(IShop shop, string productName) =>
+            shop.StorageWorker.GetPrice(new ProductName(productName));
+
+        public bool ContainsProduct(IShop shop, string productName) =>
+            shop.StorageWorker.Count(new ProductName(productName)) > 0;
+
+        private IShop AddShop(IShop shop)
         {
-            Shop shop = _shops[shopName.GetHashCode()];
-            Cart cart = _shopCarts[shopName.GetHashCode()];
-            var manager = new Manager(shop);
-            manager.Work(cart);
-
-            cart.Clear();
-        }
-
-        public void ChangePrice(ShopName shopName, string productName, uint newPrice)
-        {
-            AddToShopCart(shopName, productName, 0, newPrice);
-            Replenishment(shopName);
-        }
-
-        public uint GetPrice(ShopName shopName, string productName) =>
-            _shops[shopName.GetHashCode()].StorageWorker.GetPrice(productName);
-
-        public bool ContainsProduct(ShopName shopName, string productName) =>
-            _shops[shopName.GetHashCode()].StorageWorker.Count(productName) > 0;
-
-        private Customer AddCustomer(Customer customer)
-        {
-            var customerCart = new Cart();
-            _customers.Add(customer.GetHashCode(), customer);
-            _customerCarts.Add(customer.GetHashCode(), customerCart);
-            return customer;
-        }
-
-        private Customer GetCustomer(CustomerName name)
-        {
-            int key = name.GetHashCode();
-            if (!_customers.ContainsKey(key))
-                throw new ServiceException("There is no customer in the system with that name.");
-            return _customers[key];
-        }
-
-        private Shop AddShop(Shop shop)
-        {
-            var shopCart = new Cart();
-            _shops.Add(shop.GetHashCode(), shop);
-            _shopCarts.Add(shop.GetHashCode(), shopCart);
+            _shops.Add(shop);
             return shop;
-        }
-
-        private Shop GetShop(ShopName name)
-        {
-            int key = name.GetHashCode();
-            if (!_shops.ContainsKey(key))
-                throw new ServiceException("There is no shop in the system with that name.");
-            return _shops[key];
         }
     }
 }

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Isu.Essence;
 using Isu.Services;
-using IsuExtra.Essence.Course;
-using IsuExtra.Essence.Time;
-using IsuExtra.Essence.UniversityClass;
+using IsuExtra.Entity.Course;
+using IsuExtra.Entity.Time;
+using IsuExtra.Entity.UniversityClass;
 using IsuExtra.Tools;
 
 namespace IsuExtra.Services
@@ -15,10 +15,13 @@ namespace IsuExtra.Services
         {
             ExtraCourses = new List<IExtraCourse>();
             Timetable = new Timetable();
+            History = new List<(Student, IExtraCourse)>();
         }
 
         private List<IExtraCourse> ExtraCourses { get; }
         private ITimetable Timetable { get; }
+
+        private List<(Student, IExtraCourse)> History { get; }
 
         public IExtraCourse AddExtraCourse(string name, Faculty faculty)
         {
@@ -58,7 +61,20 @@ namespace IsuExtra.Services
         {
             if (course == null)
                 throw new IsuExtraServiceException("ExtraCourse cannot be null.");
-            return !Timetable.IsIntersect(student.GetGroupName(), number) && course.EnrollStudent(number, student);
+            if (Timetable.IsIntersect(student.GetGroupName(), number))
+                return false;
+            int count = History.Count(item => item.Item1 == student);
+            switch (count)
+            {
+                case >= 2:
+                case 1 when History.Find(item => item.Item1 == student).Item2.Faculty == course.Faculty:
+                    return false;
+            }
+
+            bool result = course.EnrollStudent(number, student);
+            if (result)
+                History.Add((student, course));
+            return result;
         }
 
         public bool UnEnrollStudent(IExtraCourse course, StreamNumber number, Student student)
@@ -80,6 +96,6 @@ namespace IsuExtra.Services
             return @group.GetStudents().Where(CheckStudent).ToList();
         }
 
-        public bool CheckStudent(Student student) => ExtraCourses.Any(course => course.ContainsStudent(student));
+        public bool CheckStudent(Student student) => ExtraCourses.All(course => !course.ContainsStudent(student));
     }
 }
