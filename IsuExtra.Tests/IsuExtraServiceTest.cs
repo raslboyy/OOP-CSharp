@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using Isu.Essence;
 using Isu.Services;
-using IsuExtra.Entity.Course;
-using IsuExtra.Entity.UniversityClass;
-using IsuExtra.Services;
 using NUnit.Framework;
 
 namespace IsuExtra.Tests
