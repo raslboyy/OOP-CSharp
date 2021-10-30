@@ -3,7 +3,7 @@ using Shops.Tools;
 
 namespace Shops.Entity.ProductModule
 {
-    public class ProductCountPrice : ICloneable
+    public class ProductCountPrice
     {
         public ProductCountPrice(IProduct product, uint count, uint price)
         {
@@ -12,10 +12,15 @@ namespace Shops.Entity.ProductModule
             Price = price;
         }
 
-        public IProduct Product { get; }
+        public IProduct Product { get; private set; }
         public uint Count { get; set; }
         public uint Price { get; set; }
 
-        public object Clone() => MemberwiseClone();
+        public ProductCountPrice DeepCopy()
+        {
+            var other = (ProductCountPrice)this.MemberwiseClone();
+            other.Product = new Product(Product.Name);
+            return other;
+        }
     }
 }

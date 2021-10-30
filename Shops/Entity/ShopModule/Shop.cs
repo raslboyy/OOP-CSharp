@@ -40,7 +40,7 @@ namespace Shops.Entity.ShopModule
             ProductCountPrice item = FindProduct(product.Product);
             if (item == null)
             {
-                Products.Add((ProductCountPrice)product.Clone());
+                Products.Add((ProductCountPrice)product.DeepCopy());
             }
             else
             {
