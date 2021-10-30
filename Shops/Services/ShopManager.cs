@@ -23,16 +23,7 @@ namespace Shops.Services
         public IShop FindCheapestShop(params ProductCount[] list)
         {
             uint min = Shops.Aggregate(uint.MaxValue, (current, shop) => Math.Min(current, shop.GetCoast(list)));
-            IShop shop = null;
-
-            foreach (IShop item in Shops.Where(item => item.GetCoast(list) == min))
-            {
-                if (shop != null)
-                    return null;
-                shop = item;
-            }
-
-            return shop;
+            return Shops.Count(item => item.GetCoast(list) == min) != 1 ? null : Shops.FirstOrDefault(item => item.GetCoast(list) == min);
         }
     }
 }
