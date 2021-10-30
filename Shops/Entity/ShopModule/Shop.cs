@@ -18,10 +18,34 @@ namespace Shops.Entity.ShopModule
         public string Name { get; }
         private List<ProductCountPrice> Products { get; }
 
-        public void AddProducts(params ProductCountPrice[] list) => StorageManager.AddProducts(this, list);
+        public void AddProducts(params ProductCountPrice[] list)
+        {
+            foreach (ProductCountPrice product in list)
+            {
+                AddProduct(product);
+            }
+        }
 
-        public bool Buy(IPerson person, params ProductCount[] list) =>
-            StorageManager.Buy(this, person, list);
+        public bool Buy(IPerson person, params ProductCount[] list)
+        {
+            if (list.Any(product => !CheckProduct(product)))
+            {
+                return false;
+            }
+
+            int coast = (int)GetCoast(list);
+            if (coast > person.Balance)
+                return false;
+
+            person.Balance -= coast;
+
+            foreach (ProductCount product in list)
+            {
+                RemoveProduct(product);
+            }
+
+            return true;
+        }
 
         public ProductCountPrice GetProductInfo(IProduct product)
         {
@@ -33,14 +57,15 @@ namespace Shops.Entity.ShopModule
 
         public void ChangePrice(IProduct product, uint newPrice) => GetProductInfo(product).Price = newPrice;
 
-        public uint GetCoast(params ProductCount[] list) => (uint)list.Sum(product => (int)FindProduct(product.Product).Price * (int)product.Count);
+        public uint GetCoast(params ProductCount[] list) =>
+            (uint)list.Sum(product => (int)FindProduct(product.Product).Price * (int)product.Count);
 
         public void AddProduct(ProductCountPrice product)
         {
             ProductCountPrice item = FindProduct(product.Product);
             if (item == null)
             {
-                Products.Add((ProductCountPrice)product.DeepCopy());
+                Products.Add(product.DeepCopy());
             }
             else
             {
