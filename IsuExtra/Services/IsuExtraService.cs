@@ -35,8 +35,8 @@ namespace IsuExtra.Services
         public IExtraCourse GetExtraCourse(string name)
         {
             int count = ExtraCourses.Count(course => course.Name == name);
-            if (count != 1)
-                throw new IsuExtraServiceException("Invalid ExtraCourse name.");
+            if (count == 0)
+                throw new IsuExtraServiceException("Course not in service.");
             return ExtraCourses.Find(course => course.Name == name);
         }
 
