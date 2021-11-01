@@ -13,32 +13,16 @@ namespace IsuExtra.Services
     {
         public IsuExtraService()
         {
-            ExtraCourses = new List<IExtraCourse>();
             Timetable = new Timetable();
-            History = new List<(Student, IExtraCourse)>();
+            Storage = new ExtraCoursesStorage();
         }
 
-        private List<IExtraCourse> ExtraCourses { get; }
+        private ExtraCoursesStorage Storage { get; }
         private ITimetable Timetable { get; }
 
-        private List<(Student, IExtraCourse)> History { get; }
+        public IExtraCourse AddExtraCourse(string name, Faculty faculty) => Storage.AddCourse(name, faculty);
 
-        public IExtraCourse AddExtraCourse(string name, Faculty faculty)
-        {
-            if (name == null)
-                throw new IsuExtraServiceException("Name of ExtraCourse cannot be null.");
-            var course = new ExtraCourse(name, faculty);
-            ExtraCourses.Add(course);
-            return course;
-        }
-
-        public IExtraCourse GetExtraCourse(string name)
-        {
-            int count = ExtraCourses.Count(course => course.Name == name);
-            if (count == 0)
-                throw new IsuExtraServiceException("Course not in service.");
-            return ExtraCourses.Find(course => course.Name == name);
-        }
+        public IExtraCourse GetExtraCourse(string name) => Storage.GetCourse(name);
 
         public IStream AddStream(IExtraCourse course, Lessons lessons)
         {
@@ -63,17 +47,17 @@ namespace IsuExtra.Services
                 throw new IsuExtraServiceException("ExtraCourse cannot be null.");
             if (Timetable.IsIntersect(student.GetGroupName(), number))
                 return false;
-            int count = History.Count(item => item.Item1 == student);
+            int count = Storage.CountEnrolls(student);
             switch (count)
             {
                 case >= 2:
-                case 1 when History.Find(item => item.Item1 == student).Item2.Faculty == course.Faculty:
+                case 1 when Storage.FindEnroll(student).Faculty == course.Faculty:
                     return false;
             }
 
             bool result = course.EnrollStudent(number, student);
             if (result)
-                History.Add((student, course));
+                Storage.AddEnroll(student, course);
             return result;
         }
 
@@ -93,9 +77,7 @@ namespace IsuExtra.Services
             if (groupName == null)
                 throw new IsuExtraServiceException("GroupName cannot be null.");
             Group group = FindGroup(groupName);
-            return @group.GetStudents().Where(CheckStudent).ToList();
+            return @group.GetStudents().Where(Storage.CheckStudent).ToList();
         }
-
-        public bool CheckStudent(Student student) => ExtraCourses.All(course => !course.ContainsStudent(student));
     }
 }

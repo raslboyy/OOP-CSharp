@@ -16,6 +16,5 @@ namespace IsuExtra.Services
         List<IStream> FindStreams(IExtraCourse course);
         List<Student> FindStudents(IExtraCourse course, StreamNumber number);
         List<Student> GetUnEnrolledStudents(GroupName groupName);
-        bool CheckStudent(Student student);
     }
 }
