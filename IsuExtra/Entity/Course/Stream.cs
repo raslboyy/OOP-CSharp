@@ -24,13 +24,7 @@ namespace IsuExtra.Entity.Course
             return true;
         }
 
-        public bool UnEnroll(Student student)
-        {
-            if (!ContainsStudent(student))
-                return false;
-            Students.Remove(student);
-            return true;
-        }
+        public bool UnEnroll(Student student) => Students.Remove(student);
 
         public bool ContainsStudent(Student student) => Students.Contains(student);
     }
