@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
+using Isu.Services;
 using Isu.Tools;
 
-namespace Isu.Services
+namespace Isu.Essence
 {
     public class Group
     {

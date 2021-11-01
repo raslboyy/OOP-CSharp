@@ -1,6 +1,10 @@
-﻿namespace Shops
+﻿using System;
+using System.Collections;
+using Shops.Entity.ProductModule;
+
+namespace Shops
 {
-    internal class Program
+    public class Program
     {
         private static void Main()
         {

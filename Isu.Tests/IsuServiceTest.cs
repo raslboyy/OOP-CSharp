@@ -1,4 +1,5 @@
 using System;
+using Isu.Essence;
 using Isu.Services;
 using Isu.Tools;
 using NUnit.Framework;
@@ -35,7 +36,7 @@ namespace Isu.Tests
         {
             Assert.IsNotNull(_isuService.FindGroup(new GroupName(CourseNumber.Second, 1)).FindStudent("Ruslan Khakimov"));
             
-            Assert.AreNotEqual(_isuService.FindStudent("Ruslan Khakimov").GetGroupName(), new GroupName("M3201"));
+            Assert.AreEqual(_isuService.FindStudent("Ruslan Khakimov").GetGroupName(), new GroupName("M3201"));
         }
 
         [Test]
