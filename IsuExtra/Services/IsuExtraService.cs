@@ -47,8 +47,7 @@ namespace IsuExtra.Services
                 throw new IsuExtraServiceException("ExtraCourse cannot be null.");
             if (Timetable.IsIntersect(student.GetGroupName(), number))
                 return false;
-            int count = Storage.CountEnrolls(student);
-            if (count == 2 || (count == 1 && Storage.GetEnroll(student).Faculty == course.Faculty))
+            if (!Storage.CheckHistory(course, student))
                 return false;
 
             bool result = course.EnrollStudent(number, student);

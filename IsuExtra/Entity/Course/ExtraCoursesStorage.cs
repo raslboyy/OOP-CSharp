@@ -33,11 +33,22 @@ namespace IsuExtra.Entity.Course
             return ExtraCourses.Find(course => course.Name == name);
         }
 
-        public int CountEnrolls(Student student) => History.Count(studentExtraCourse => studentExtraCourse.Student == student);
+        public void AddEnroll(Student student, IExtraCourse course) =>
+            History.Add(new StudentExtraCourse(student, course));
 
-        public IExtraCourse GetEnroll(Student student) => History.Find(studentExtraCourse => studentExtraCourse.Student == student)?.ExtraCourse;
-
-        public void AddEnroll(Student student, IExtraCourse course) => History.Add(new StudentExtraCourse(student, course));
         public bool CheckStudent(Student student) => ExtraCourses.All(course => !course.ContainsStudent(student));
+
+        public bool CheckHistory(IExtraCourse course, Student student)
+        {
+            int count = CountEnrolls(student);
+            if (count == 0)
+                return true;
+            if (count == 2)
+                return false;
+            return GetCourse(course.Name).Faculty == course.Faculty;
+        }
+
+        private int CountEnrolls(Student student) =>
+            History.Count(studentExtraCourse => studentExtraCourse.Student == student);
     }
 }
