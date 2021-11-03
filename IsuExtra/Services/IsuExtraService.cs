@@ -48,7 +48,7 @@ namespace IsuExtra.Services
             if (Timetable.IsIntersect(student.GetGroupName(), number))
                 return false;
             int count = Storage.CountEnrolls(student);
-            if (count == 2 || (count == 1 && Storage.FindEnroll(student).Faculty == course.Faculty))
+            if (count == 2 || (count == 1 && Storage.GetEnroll(student).Faculty == course.Faculty))
                 return false;
 
             bool result = course.EnrollStudent(number, student);

@@ -10,11 +10,11 @@ namespace IsuExtra.Entity.Course
         public ExtraCoursesStorage()
         {
             ExtraCourses = new List<IExtraCourse>();
-            History = new List<(Student, IExtraCourse)>();
+            History = new List<StudentExtraCourse>();
         }
 
         private List<IExtraCourse> ExtraCourses { get; }
-        private List<(Student, IExtraCourse)> History { get; }
+        private List<StudentExtraCourse> History { get; }
 
         public IExtraCourse AddCourse(string name, Faculty faculty)
         {
@@ -33,11 +33,11 @@ namespace IsuExtra.Entity.Course
             return ExtraCourses.Find(course => course.Name == name);
         }
 
-        public int CountEnrolls(Student student) => History.Count(item => item.Item1 == student);
+        public int CountEnrolls(Student student) => History.Count(studentExtraCourse => studentExtraCourse.Student == student);
 
-        public IExtraCourse FindEnroll(Student student) => History.Find(item => item.Item1 == student).Item2;
+        public IExtraCourse GetEnroll(Student student) => History.Find(studentExtraCourse => studentExtraCourse.Student == student)?.ExtraCourse;
 
-        public void AddEnroll(Student student, IExtraCourse course) => History.Add((student, course));
+        public void AddEnroll(Student student, IExtraCourse course) => History.Add(new StudentExtraCourse(student, course));
         public bool CheckStudent(Student student) => ExtraCourses.All(course => !course.ContainsStudent(student));
     }
 }
