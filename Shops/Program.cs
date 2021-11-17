@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using Shops.Entity.ProductModule;
-
-namespace Shops
+﻿namespace Shops
 {
     public class Program
     {
