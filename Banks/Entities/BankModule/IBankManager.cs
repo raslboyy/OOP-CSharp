@@ -1,4 +1,4 @@
-namespace Banks.BankModule
+namespace Banks.Entities.BankModule
 {
     public interface IBankManager
     {
