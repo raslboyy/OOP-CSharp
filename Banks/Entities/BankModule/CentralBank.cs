@@ -11,7 +11,7 @@ namespace Banks.Entities.BankModule
         }
 
         private static CentralBank Instance { get; set; }
-        private static List<IBankManager> Banks { get; set; }
+        private static List<IBankManager> Banks { get; set; } = new List<IBankManager>();
 
         public static CentralBank GetInstance() => Instance ??= new CentralBank();
 
