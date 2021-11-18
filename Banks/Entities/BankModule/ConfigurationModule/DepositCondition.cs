@@ -4,14 +4,12 @@ namespace Banks.Entities.BankModule.ConfigurationModule
 {
     public readonly struct DepositCondition
     {
-        public DepositCondition(Limits limits)
+        public DepositCondition(List<ValuePercent> percents)
         {
-            Percents = new List<ValuePercent>();
-            Limits = limits;
+            Percents = percents;
         }
 
         public List<ValuePercent> Percents { get; }
-        public Limits Limits { get; }
         public void AddValuePercent(double value, double percent) => Percents.Add(new ValuePercent(value, percent));
     }
 }

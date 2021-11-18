@@ -2,13 +2,13 @@ namespace Banks.Entities.BankModule.ConfigurationModule
 {
     public readonly struct CreditCondition
     {
-        public CreditCondition(Limits limits, double commission)
+        public CreditCondition(double commission, double limit)
         {
-            Limits = limits;
             Commission = commission;
+            Limit = limit;
         }
 
-        public Limits Limits { get; }
+        public double Limit { get; }
         public double Commission { get; }
     }
 }
