@@ -5,6 +5,6 @@ namespace Banks.Entities.BankModule
 {
     public interface IBank
     {
-        // IClient AddClient(ClientBuilder builder);
+        IClient AddClient(ClientBuilder builder);
     }
 }

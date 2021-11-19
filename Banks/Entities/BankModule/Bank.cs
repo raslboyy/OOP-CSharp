@@ -1,6 +1,7 @@
 using System;
 using Banks.Entities.BankModule.ConfigurationModule;
 using Banks.Entities.ClientModule;
+using Banks.Entities.ClientModule.ClientBuilderModule;
 
 namespace Banks.Entities.BankModule
 {
@@ -15,5 +16,12 @@ namespace Banks.Entities.BankModule
         public string Name { get; set; }
         public BankConfiguration Configuration { get; }
         private ClientsStorage Clients { get; } = new ClientsStorage();
+
+        public IClient AddClient(ClientBuilder builder)
+        {
+            Client client = builder.GetResult();
+            Clients.AddClient(client);
+            return client;
+        }
     }
 }
