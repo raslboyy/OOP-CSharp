@@ -10,10 +10,12 @@ namespace Banks.Entities.AccountModule
             Configuration = configuration;
             Id = IdCount++;
             Percentages = 0;
+            Age = 0;
         }
 
         public int Id { get; }
         public double Balance { get; protected set; }
+        public int Age { get; protected set; }
         protected double Percentages { get; set; }
         protected BankConfiguration Configuration { get; }
         private static int IdCount { get; set; }

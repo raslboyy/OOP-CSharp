@@ -14,7 +14,10 @@ namespace Banks.Entities.AccountModule
 
         public override bool Withdraw(double value)
         {
-            throw new System.NotImplementedException();
+            if (Age < Term)
+                return false;
+            Balance -= value;
+            return true;
         }
     }
 }
