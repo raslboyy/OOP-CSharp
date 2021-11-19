@@ -1,9 +1,11 @@
+using Banks.Entities.BankModule.ConfigurationModule;
+
 namespace Banks.Entities.AccountModule
 {
     public class CreditAccount : AAccount
     {
-        public CreditAccount(double balance)
-            : base(balance)
+        public CreditAccount(double balance, BankConfiguration configuration)
+            : base(balance, configuration)
         {
         }
 

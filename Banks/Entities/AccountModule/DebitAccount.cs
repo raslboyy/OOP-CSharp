@@ -1,9 +1,11 @@
+using Banks.Entities.BankModule.ConfigurationModule;
+
 namespace Banks.Entities.AccountModule
 {
     public class DebitAccount : AAccount
     {
-        public DebitAccount(double balance)
-            : base(balance)
+        public DebitAccount(double balance, BankConfiguration configuration)
+            : base(balance, configuration)
         {
         }
 

@@ -20,6 +20,7 @@ namespace Banks.Entities.BankModule
         public IClient AddClient(ClientBuilder builder)
         {
             Client client = builder.GetResult();
+            client.Configuration = Configuration;
             Clients.AddClient(client);
             return client;
         }
