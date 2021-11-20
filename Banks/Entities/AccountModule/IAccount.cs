@@ -4,6 +4,7 @@ namespace Banks.Entities.AccountModule
     {
         double Balance { get; }
         int Age { get; }
+        int Id { get; }
         bool TopUp(double value);
         bool Withdraw(double value);
         TransferResult TransferTo(int accountId, double value);

@@ -19,7 +19,7 @@ namespace Banks.Entities.AccountModule
             if (value <= 0)
                 throw new TransferException("Value for Transfer must be positive.");
             AAccount account = CentralBank.FindAccount(accountId);
-            if (!Account.Withdraw(value) || account == null)
+            if (account == null || !Account.Withdraw(value))
                 return new TransferResult(false, -1);
 
             account.TopUp(value);
