@@ -12,6 +12,7 @@ namespace Banks.Entities.AccountModule
             Id = IdCount++;
             Percentages = 0;
             Age = 0;
+            Transfer = new Transfer(this);
         }
 
         public int Id { get; }
@@ -22,6 +23,7 @@ namespace Banks.Entities.AccountModule
         protected double Percentages { get; set; }
         protected BankConfiguration Configuration { get; }
         private static int IdCount { get; set; }
+        private Transfer Transfer { get; }
 
         public bool TopUp(double value)
         {
@@ -31,6 +33,16 @@ namespace Banks.Entities.AccountModule
 
         public abstract bool Withdraw(double value);
 
-        // public abstract bool Transfer(int accountId, double value);
+        public TransferResult TransferTo(int accountId, double value) => Transfer.Execute(accountId, value);
+
+        public void CancelTransfer(int transferId) => Transfer.Cancel(transferId);
+
+        public void Restore(Snapshot snapshot) => Balance += snapshot.Value;
+
+        public class Snapshot
+        {
+            public Snapshot(double value) => Value = value;
+            public double Value { get; }
+        }
     }
 }

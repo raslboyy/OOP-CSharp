@@ -6,7 +6,7 @@ using Banks.Entities.BankModule.ConfigurationModule;
 // Вся внешняя логика проходит через интерфейс IClient либо Билдер
 namespace Banks.Entities.ClientModule
 {
-    public class Client : IClient
+    public class Client : IClient, IClientManager
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -15,6 +15,7 @@ namespace Banks.Entities.ClientModule
         public bool IsGood { get; set; }
         internal BankConfiguration Configuration { get; set; }
         private List<AAccount> Accounts { get; } = new List<AAccount>();
+
         public IAccount CreateDebitAccount(double value)
         {
             var account = new DebitAccount(value, Configuration);
@@ -36,6 +37,6 @@ namespace Banks.Entities.ClientModule
             return account;
         }
 
-        public IAccount GetAccount(int id) => Accounts.FirstOrDefault(account => account.Id == id);
+        public AAccount FindAccount(int id) => Accounts.FirstOrDefault(account => account.Id == id);
     }
 }

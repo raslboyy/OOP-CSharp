@@ -1,8 +1,8 @@
 using Banks.Entities.AccountModule;
 
-namespace Banks.Entities.BankModule
+namespace Banks.Entities.ClientModule
 {
-    public interface IBankManager
+    public interface IClientManager
     {
         AAccount FindAccount(int id);
     }
