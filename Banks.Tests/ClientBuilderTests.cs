@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Banks.Tests
 {
-    public class ClientBuilderTest
+    public class ClientBuilderTests
     {
         [Test]
         public void GetResult_AllFields_IsGoodTrue()

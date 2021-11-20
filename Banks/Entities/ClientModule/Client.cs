@@ -3,6 +3,7 @@ using System.Linq;
 using Banks.Entities.AccountModule;
 using Banks.Entities.BankModule.ConfigurationModule;
 
+// Вся внешняя логика проходит через интерфейс IClient либо Билдер
 namespace Banks.Entities.ClientModule
 {
     public class Client : IClient
