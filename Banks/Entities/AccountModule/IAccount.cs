@@ -6,7 +6,7 @@ namespace Banks.Entities.AccountModule
         int Age { get; }
         bool TopUp(double value);
         bool Withdraw(double value);
-
-        // bool Transfer(int accountId, double value);
+        TransferResult TransferTo(int accountId, double value);
+        void CancelTransfer(int transferId);
     }
 }
