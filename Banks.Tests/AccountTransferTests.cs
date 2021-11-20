@@ -68,7 +68,7 @@ namespace Banks.Tests
         }
 
         [Test]
-        public void CancelTransfer_CancelTwice_ThrowTransferException()
+        public void CancelTransfer_CancelTwice_ThrowTransferExceptionMoneyNotReturned()
         {
             IAccount account1 = CreateDefaultFromAccount();
             IAccount account2 = CreateDefaultToAccount();
@@ -77,22 +77,26 @@ namespace Banks.Tests
             TransferResult transfer = account1.TransferTo(account2.Id, startValue / 2);
             account1.TransferTo(account2.Id, startValue / 2);
             account1.CancelTransfer(transfer.IdTransfer);
+            double expected = account1.Balance;
             
             Assert.Catch<TransferException>(() =>
             {
                 account1.CancelTransfer(transfer.IdTransfer);
             });
+            Assert.AreEqual(expected, account1.Balance);
         }
         
         [Test]
-        public void CancelTransfer_IncorrectId_ThrowTransferException()
+        public void CancelTransfer_IncorrectId_ThrowTransferExceptionMoneyNotReturned()
         {
             IAccount account1 = CreateDefaultFromAccount();
+            double expected = account1.Balance;
             
             Assert.Catch<TransferException>(() =>
             {
                 account1.CancelTransfer(int.MaxValue);
             });
+            Assert.AreEqual(expected, account1.Balance);
         }
 
         private static BankConfiguration CreateDefaultBankConfiguration()
