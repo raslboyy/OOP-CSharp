@@ -118,7 +118,7 @@ namespace Banks.Tests
         {
             IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
             var builder = new LastClientBuilder();
-            builder.SetFirstName("First").SetLastName("Last");
+            builder.SetFirstName("First").SetLastName("Last").SetAddress("fd").SetPassport("f");
             IClient client = bank.AddClient(builder);
             return client.CreateDebitAccount(1000);
         }
