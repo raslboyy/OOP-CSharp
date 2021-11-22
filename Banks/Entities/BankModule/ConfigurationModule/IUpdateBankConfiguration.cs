@@ -5,5 +5,6 @@ namespace Banks.Entities.BankModule.ConfigurationModule
         IUpdateCreditCondition UpdateCreditCondition();
         IUpdateDebitCondition UpdateDebitCondition();
         IUpdateDepositCondition UpdateDepositCondition();
+        IUpdateAccountCondition UpdateAccountCondition();
     }
 }

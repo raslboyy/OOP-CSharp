@@ -18,6 +18,8 @@ namespace Banks.Entities.AccountModule
         {
             if (value <= 0)
                 throw new TransferException("Value for Transfer must be positive.");
+            if (value > Account.Configuration.AccountCondition.WithdrawalLimit)
+                return new TransferResult(false, -1);
             AAccount account = CentralBank.FindAccount(accountId);
             if (account == null || !Account.Withdraw(value))
                 return new TransferResult(false, -1);

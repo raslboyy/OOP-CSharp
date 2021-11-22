@@ -20,8 +20,8 @@ namespace Banks.Entities.AccountModule
 
         // public set for tests (to correct)
         public int Age { get; set; }
+        public BankConfiguration Configuration { get; }
         protected double Percentages { get; set; }
-        protected BankConfiguration Configuration { get; }
         private static int IdCount { get; set; }
         private Transfer Transfer { get; }
 

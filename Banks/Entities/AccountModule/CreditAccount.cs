@@ -11,6 +11,8 @@ namespace Banks.Entities.AccountModule
 
         public override bool Withdraw(double value)
         {
+            if (value > Configuration.AccountCondition.WithdrawalLimit)
+                return false;
             if (Balance - value < Configuration.CreditCondition.Limit)
                 return false;
             Balance -= value;

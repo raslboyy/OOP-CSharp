@@ -109,8 +109,9 @@ namespace Banks.Tests
                 new ValuePercent(500, 4),
                 new ValuePercent(1000, 7)
             });
+            var account = new AccountCondition(1000, 1000);
 
-            return new BankConfiguration(credit, debit, deposit);
+            return new BankConfiguration(credit, debit, deposit, account);
         }
 
         private static IAccount CreateDefaultFromAccount()
