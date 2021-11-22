@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using Banks.Entities.AccountModule;
+using Banks.Entities.BankModule;
 using Banks.Entities.BankModule.ConfigurationModule;
+using Banks.Entities.ClientModule;
+using Banks.Entities.ClientModule.ClientBuilderModule;
 using NUnit.Framework;
 
 namespace Banks.Tests
@@ -97,7 +100,25 @@ namespace Banks.Tests
             Assert.AreEqual(false, actual);
             Assert.AreEqual(startValue, account.Balance);
         }
-        
+
+        [Test]
+        public void Update_UpdateLimit_LimitChanged()
+        {
+            const double startValue = 0;
+            IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
+            var builder = new LastClientBuilder();
+            builder.SetFirstName("First").SetLastName("Last");
+            IClient client = bank.AddClient(builder);
+            IAccount account = client.CreateCreditAccount(startValue);
+            
+            const double value = 1001;
+            bank.Update().UpdateCreditCondition().UpdateLimit(-1001);
+            bool actual = account.Withdraw(value);
+            
+            Assert.AreEqual(true, actual);
+            Assert.AreEqual(startValue - value, account.Balance);
+        }
+
         private static BankConfiguration CreateDefaultBankConfiguration()
         {
             var credit = new CreditCondition(15, -1000);
