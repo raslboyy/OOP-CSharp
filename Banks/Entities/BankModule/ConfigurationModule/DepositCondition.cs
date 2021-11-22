@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Banks.Entities.BankModule.ConfigurationModule
 {
-    public class DepositCondition
+    public class DepositCondition : IUpdateDepositCondition
     {
         public DepositCondition(List<ValuePercent> percents)
         {

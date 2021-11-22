@@ -26,6 +26,8 @@ namespace Banks.Entities.BankModule
             return client;
         }
 
+        public IUpdateBankConfiguration Update() => Configuration;
+
         public AAccount FindAccount(int id) => Clients.FindAccount(id);
     }
 }

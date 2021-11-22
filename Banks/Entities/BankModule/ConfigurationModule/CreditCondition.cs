@@ -1,6 +1,6 @@
 namespace Banks.Entities.BankModule.ConfigurationModule
 {
-    public class CreditCondition
+    public class CreditCondition : IUpdateCreditCondition
     {
         public CreditCondition(double commission, double limit)
         {
@@ -8,7 +8,10 @@ namespace Banks.Entities.BankModule.ConfigurationModule
             Limit = limit;
         }
 
-        public double Limit { get; }
-        public double Commission { get; }
+        public double Limit { get; private set; }
+        public double Commission { get; private set; }
+        public void UpdateLimit(double value) => Limit = value;
+
+        public void UpdateCommission(double value) => Commission = value;
     }
 }
