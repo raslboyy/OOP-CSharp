@@ -1,19 +1,20 @@
 using Banks.Entities.BankModule.BankConfigurationModule;
+using Banks.Entities.ClientModule.ClientConfigurationModule;
 
 namespace Banks.Entities.AccountModule
 {
     public class CreditAccount : AAccount
     {
-        public CreditAccount(double balance, BankConfiguration configuration)
-            : base(balance, configuration)
+        public CreditAccount(double balance, BankConfiguration bankConfiguration, ClientConfiguration clientConfiguration)
+            : base(balance, bankConfiguration, clientConfiguration)
         {
         }
 
         public override bool Withdraw(double value)
         {
-            if (value > Configuration.AccountCondition.WithdrawalLimit)
+            if (value > BankConfiguration.AccountCondition.WithdrawalLimit)
                 return false;
-            if (Balance - value < Configuration.CreditCondition.Limit)
+            if (Balance - value < BankConfiguration.CreditCondition.Limit)
                 return false;
             Balance -= value;
             return true;

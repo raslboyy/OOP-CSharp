@@ -13,10 +13,11 @@ namespace Banks.Tests
         [Test]
         public void TopUp_BalanceChanged()
         {
-            const double startValue = 100;
-            var account = new DebitAccount(startValue, CreateDefaultBankConfiguration());
-
-            const double value = 100;
+            IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
+            IAccount account = CreateDefaultDebitAccount(bank);
+            double startValue = account.Balance;
+            
+            const double value = 1000;
             account.TopUp(value);
             
             Assert.AreEqual(startValue + value, account.Balance);
@@ -25,10 +26,11 @@ namespace Banks.Tests
         [Test]
         public void Withdraw_DebitAccountEnoughMoney_ReturnTrueBalanceChanged()
         {
-            const double startValue = 100;
-            var account = new DebitAccount(startValue, CreateDefaultBankConfiguration());
-
-            const double value = 100;
+            IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
+            IAccount account = CreateDefaultDebitAccount(bank);
+            double startValue = account.Balance;
+            
+            const double value = 1000;
             bool actual = account.Withdraw(value);
             
             Assert.AreEqual(true, actual);
@@ -38,10 +40,11 @@ namespace Banks.Tests
         [Test]
         public void Withdraw_DebitAccountNotEnoughMoney_ReturnFalseBalanceNotChanged()
         {
-            const double startValue = 100;
-            var account = new DebitAccount(startValue, CreateDefaultBankConfiguration());
-
-            const double value = 200;
+            IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
+            IAccount account = CreateDefaultDebitAccount(bank);
+            double startValue = account.Balance;
+            
+            const double value = 2000;
             bool actual = account.Withdraw(value);
             
             Assert.AreEqual(false, actual);
@@ -51,11 +54,12 @@ namespace Banks.Tests
         [Test]
         public void Withdraw_DepositAccountEnoughTerm_ReturnTrueBalanceChanged()
         {
-            const double startValue = 100;
-            var account = new DepositAccount(startValue, 12, CreateDefaultBankConfiguration());
-
-            const double value = 100;
-            account.Age = 12;
+            IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
+            IAccount account = CreateDefaultDepositAccount(bank);
+            double startValue = account.Balance;
+            
+            const double value = 1000;
+            ((AAccount)account).Age = 12;
             bool actual = account.Withdraw(value);
             
             Assert.AreEqual(true, actual);
@@ -65,10 +69,11 @@ namespace Banks.Tests
         [Test]
         public void Withdraw_DepositAccountTermNotEnough_ReturnFalseBalanceNotChanged()
         {
-            const double startValue = 100;
-            var account = new DepositAccount(startValue, 12, CreateDefaultBankConfiguration());
-
-            const double value = 100;
+            IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
+            IAccount account = CreateDefaultDepositAccount(bank);
+            double startValue = account.Balance;
+            
+            const double value = 1000;
             bool actual = account.Withdraw(value);
             
             Assert.AreEqual(false, actual);
@@ -78,10 +83,11 @@ namespace Banks.Tests
         [Test]
         public void Withdraw_CreditAccountLimitEnough_ReturnTrueBalanceChanged()
         {
-            const double startValue = 0;
-            var account = new CreditAccount(startValue, CreateDefaultBankConfiguration());
-
-            const double value = 1000;
+            IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
+            IAccount account = CreateDefaultCreditAccount(bank);
+            double startValue = account.Balance;
+            
+            const double value = 2000;
             bool actual = account.Withdraw(value);
             
             Assert.AreEqual(true, actual);
@@ -91,10 +97,11 @@ namespace Banks.Tests
         [Test]
         public void Withdraw_CreditAccountLimitNotEnough_ReturnFalseBalanceNotChanged()
         {
-            const double startValue = 0;
-            var account = new CreditAccount(startValue, CreateDefaultBankConfiguration());
-
-            const double value = 1001;
+            IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
+            IAccount account = CreateDefaultCreditAccount(bank);
+            double startValue = account.Balance;
+            
+            const double value = 2001;
             bool actual = account.Withdraw(value);
             
             Assert.AreEqual(false, actual);
@@ -107,7 +114,7 @@ namespace Banks.Tests
             const double startValue = 0;
             IBank bank = CentralBank.RegisterBank("Sber", CreateDefaultBankConfiguration());
             var builder = new LastClientBuilder();
-            builder.SetFirstName("First").SetLastName("Last");
+            builder.SetFirstName("First").SetLastName("Last").SetAddress("Address").SetPassport("Passport");
             IClient client = bank.AddClient(builder);
             IAccount account = client.CreateCreditAccount(startValue);
             
@@ -129,9 +136,33 @@ namespace Banks.Tests
                 new ValuePercent(500, 4),
                 new ValuePercent(1000, 7)
             });
-            var account = new AccountCondition(1000, 1000);
+            var account = new AccountCondition(2000, 2000, 100);
 
             return new BankConfiguration(credit, debit, deposit, account);
+        }
+        
+        private static IAccount CreateDefaultDebitAccount(IBank bank)
+        {
+            var builder = new LastClientBuilder();
+            builder.SetFirstName("First").SetLastName("Last");
+            IClient client = bank.AddClient(builder);
+            return client.CreateDebitAccount(1000);
+        }
+        
+        private static IAccount CreateDefaultDepositAccount(IBank bank)
+        {
+            var builder = new LastClientBuilder();
+            builder.SetFirstName("First").SetLastName("Last");
+            IClient client = bank.AddClient(builder);
+            return client.CreateDepositAccount(1000, 12);
+        }
+        
+        private static IAccount CreateDefaultCreditAccount(IBank bank)
+        {
+            var builder = new LastClientBuilder();
+            builder.SetFirstName("First").SetLastName("Last").SetAddress("Address").SetPassport("Passport");
+            IClient client = bank.AddClient(builder);
+            return client.CreateCreditAccount(1000);
         }
     }
 }

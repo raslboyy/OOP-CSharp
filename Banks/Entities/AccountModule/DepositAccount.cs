@@ -1,11 +1,12 @@
 using Banks.Entities.BankModule.BankConfigurationModule;
+using Banks.Entities.ClientModule.ClientConfigurationModule;
 
 namespace Banks.Entities.AccountModule
 {
     public class DepositAccount : AAccount
     {
-        public DepositAccount(double balance, int term, BankConfiguration configuration)
-            : base(balance, configuration)
+        public DepositAccount(double balance, int term, BankConfiguration bankConfiguration, ClientConfiguration clientConfiguration)
+            : base(balance, bankConfiguration, clientConfiguration)
         {
             Term = term;
         }
@@ -14,7 +15,7 @@ namespace Banks.Entities.AccountModule
 
         public override bool Withdraw(double value)
         {
-            if (value > Configuration.AccountCondition.WithdrawalLimit)
+            if (value > BankConfiguration.AccountCondition.WithdrawalLimit)
                 return false;
             if (Age < Term)
                 return false;

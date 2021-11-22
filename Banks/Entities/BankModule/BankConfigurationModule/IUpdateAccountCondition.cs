@@ -4,5 +4,6 @@ namespace Banks.Entities.BankModule.BankConfigurationModule
     {
         void UpdateWithdrawalLimit(double value);
         void UpdateTransferLimit(double value);
+        public void UpdateLimitForBadClients(double value);
     }
 }

@@ -1,14 +1,15 @@
 using Banks.Entities.BankModule.BankConfigurationModule;
+using Banks.Entities.ClientModule.ClientConfigurationModule;
 
 // Вся внешняя логика проходит через интерфейс IAccount
 namespace Banks.Entities.AccountModule
 {
     public abstract class AAccount : IAccount
     {
-        protected AAccount(double balance, BankConfiguration configuration)
+        protected AAccount(double balance, BankConfiguration bankConfiguration, ClientConfiguration clientConfiguration)
         {
             Balance = balance;
-            Configuration = configuration;
+            BankConfiguration = bankConfiguration;
             Id = IdCount++;
             Percentages = 0;
             Age = 0;
@@ -20,7 +21,8 @@ namespace Banks.Entities.AccountModule
 
         // public set for tests (to correct)
         public int Age { get; set; }
-        public BankConfiguration Configuration { get; }
+        public BankConfiguration BankConfiguration { get; }
+        public ClientConfiguration ClientConfiguration { get; }
         protected double Percentages { get; set; }
         private static int IdCount { get; set; }
         private Transfer Transfer { get; }

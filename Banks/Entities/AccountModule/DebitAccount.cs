@@ -1,17 +1,18 @@
 using Banks.Entities.BankModule.BankConfigurationModule;
+using Banks.Entities.ClientModule.ClientConfigurationModule;
 
 namespace Banks.Entities.AccountModule
 {
     public class DebitAccount : AAccount
     {
-        public DebitAccount(double balance, BankConfiguration configuration)
-            : base(balance, configuration)
+        public DebitAccount(double balance, BankConfiguration bankConfiguration, ClientConfiguration clientConfiguration)
+            : base(balance, bankConfiguration, clientConfiguration)
         {
         }
 
         public override bool Withdraw(double value)
         {
-            if (value > Configuration.AccountCondition.WithdrawalLimit)
+            if (value > BankConfiguration.AccountCondition.WithdrawalLimit)
                 return false;
             if (Balance - value < 0)
                 return false;

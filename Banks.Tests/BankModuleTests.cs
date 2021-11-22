@@ -29,7 +29,7 @@ namespace Banks.Tests
                 new ValuePercent(500, 4),
                 new ValuePercent(1000, 7)
             });
-            var account = new AccountCondition(1000, 1000);
+            var account = new AccountCondition(1000, 1000, 500);
 
             return new BankConfiguration(credit, debit, deposit, account);
         }
