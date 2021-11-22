@@ -174,7 +174,7 @@ namespace Banks.Tests
 
         private static BankConfiguration CreateDefaultBankConfiguration()
         {
-            var credit = new CreditCondition(15, -1000);
+            var credit = new CreditCondition(0, -1000);
             var debit = new DebitCondition(15);
             var deposit = new DepositCondition(new List<ValuePercent>()
             {
