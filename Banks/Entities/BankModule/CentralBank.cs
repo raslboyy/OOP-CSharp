@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Banks.Entities.AccountModule;
 using Banks.Entities.BankModule.BankConfigurationModule;
+using Banks.Tools;
 
 namespace Banks.Entities.BankModule
 {
@@ -14,6 +14,7 @@ namespace Banks.Entities.BankModule
 
         private static CentralBank Instance { get; set; }
         private static List<IBankManager> Banks { get; } = new List<IBankManager>();
+        private static int DaysCount { get; set; }
 
         public static CentralBank GetInstance() => Instance ??= new CentralBank();
 
@@ -28,6 +29,11 @@ namespace Banks.Entities.BankModule
         {
             IBankManager bank = Banks.FirstOrDefault(bank => bank.FindAccount(id) != null);
             return bank?.FindAccount(id);
+        }
+
+        public static void SkipDays(int n = 1)
+        {
+            Banks.ForEach(bank => bank.SkipDays(n));
         }
     }
 }

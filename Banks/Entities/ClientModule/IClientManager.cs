@@ -8,5 +8,6 @@ namespace Banks.Entities.ClientModule
         bool IsGood { get; }
         BankConfiguration Configuration { get; }
         AAccount FindAccount(int id);
+        void SkipDays(int n = 1);
     }
 }

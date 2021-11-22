@@ -29,5 +29,6 @@ namespace Banks.Entities.BankModule
         public IUpdateBankConfiguration Update() => Configuration;
 
         public AAccount FindAccount(int id) => Clients.FindAccount(id);
+        public void SkipDays(int n) => Clients.SkipDays(n);
     }
 }

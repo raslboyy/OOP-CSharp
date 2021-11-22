@@ -1,5 +1,6 @@
 using Banks.Entities.BankModule.BankConfigurationModule;
 using Banks.Entities.ClientModule.ClientConfigurationModule;
+using Banks.Tools;
 
 // Вся внешняя логика проходит через интерфейс IAccount
 namespace Banks.Entities.AccountModule
@@ -38,9 +39,24 @@ namespace Banks.Entities.AccountModule
 
         public TransferResult TransferTo(int accountId, double value) => Transfer.Execute(accountId, value);
 
+        public void SkipDays(int n)
+        {
+            if (n <= 0)
+                throw new AAccountException("N must be positive.");
+            Age += n;
+            CalculatePercentages();
+            if (Age % 30 == 0)
+            {
+                ChargePercentages();
+            }
+        }
+
         public void CancelTransfer(int transferId) => Transfer.Cancel(transferId);
 
         public void Restore(Snapshot snapshot) => Balance += snapshot.Value;
+
+        protected abstract void CalculatePercentages();
+        private void ChargePercentages() => Balance += Percentages;
 
         public class Snapshot
         {

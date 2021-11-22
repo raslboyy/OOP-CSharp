@@ -14,5 +14,7 @@ namespace Banks.Entities.ClientModule
             IClientManager client = Clients.FirstOrDefault(client => client.FindAccount(id) != null);
             return client?.FindAccount(id);
         }
+
+        public void SkipDays(int n) => Clients.ForEach(client => client.SkipDays(n));
     }
 }

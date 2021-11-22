@@ -5,7 +5,10 @@ namespace Banks.Entities.AccountModule
 {
     public class DebitAccount : AAccount
     {
-        public DebitAccount(double balance, BankConfiguration bankConfiguration, ClientConfiguration clientConfiguration)
+        public DebitAccount(
+            double balance,
+            BankConfiguration bankConfiguration,
+            ClientConfiguration clientConfiguration)
             : base(balance, bankConfiguration, clientConfiguration)
         {
         }

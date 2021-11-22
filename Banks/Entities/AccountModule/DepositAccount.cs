@@ -5,7 +5,11 @@ namespace Banks.Entities.AccountModule
 {
     public class DepositAccount : AAccount
     {
-        public DepositAccount(double balance, int term, BankConfiguration bankConfiguration, ClientConfiguration clientConfiguration)
+        public DepositAccount(
+            double balance,
+            int term,
+            BankConfiguration bankConfiguration,
+            ClientConfiguration clientConfiguration)
             : base(balance, bankConfiguration, clientConfiguration)
         {
             Term = term;
@@ -21,6 +25,10 @@ namespace Banks.Entities.AccountModule
                 return false;
             Balance -= value;
             return true;
+        }
+
+        protected override void CalculatePercentages()
+        {
         }
     }
 }

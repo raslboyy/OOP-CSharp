@@ -5,7 +5,10 @@ namespace Banks.Entities.AccountModule
 {
     public class CreditAccount : AAccount
     {
-        public CreditAccount(double balance, BankConfiguration bankConfiguration, ClientConfiguration clientConfiguration)
+        public CreditAccount(
+            double balance,
+            BankConfiguration bankConfiguration,
+            ClientConfiguration clientConfiguration)
             : base(balance, bankConfiguration, clientConfiguration)
         {
         }
@@ -14,10 +17,15 @@ namespace Banks.Entities.AccountModule
         {
             if (value > ClientConfiguration.WithdrawalLimit)
                 return false;
-            if (Balance - value - BankConfiguration.CreditCondition.Commission < BankConfiguration.CreditCondition.Limit)
+            if (Balance - value - BankConfiguration.CreditCondition.Commission <
+                BankConfiguration.CreditCondition.Limit)
                 return false;
             Balance -= value + BankConfiguration.CreditCondition.Commission;
             return true;
+        }
+
+        protected override void CalculatePercentages()
+        {
         }
     }
 }

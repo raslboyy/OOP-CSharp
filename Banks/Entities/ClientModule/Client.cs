@@ -53,5 +53,6 @@ namespace Banks.Entities.ClientModule
         }
 
         public AAccount FindAccount(int id) => Accounts.FirstOrDefault(account => account.Id == id);
+        public void SkipDays(int n) => Accounts.ForEach(account => account.SkipDays(n));
     }
 }
