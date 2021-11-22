@@ -12,7 +12,7 @@ namespace Banks.Entities.AccountModule
 
         public override bool Withdraw(double value)
         {
-            if (value > BankConfiguration.AccountCondition.WithdrawalLimit)
+            if (value > ClientConfiguration.WithdrawalLimit)
                 return false;
             if (Balance - value < 0)
                 return false;

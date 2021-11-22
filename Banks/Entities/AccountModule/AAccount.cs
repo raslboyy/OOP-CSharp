@@ -10,6 +10,7 @@ namespace Banks.Entities.AccountModule
         {
             Balance = balance;
             BankConfiguration = bankConfiguration;
+            ClientConfiguration = clientConfiguration;
             Id = IdCount++;
             Percentages = 0;
             Age = 0;
