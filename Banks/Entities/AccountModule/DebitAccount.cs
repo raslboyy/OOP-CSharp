@@ -22,5 +22,8 @@ namespace Banks.Entities.AccountModule
             Balance -= value;
             return true;
         }
+
+        protected override void CalculatePercentages() =>
+            Percentages += Balance * BankConfiguration.DebitCondition.Percent;
     }
 }
