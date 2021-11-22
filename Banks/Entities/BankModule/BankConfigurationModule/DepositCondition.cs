@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Banks.Entities.BankModule.ConfigurationModule
+namespace Banks.Entities.BankModule.BankConfigurationModule
 {
     public class DepositCondition : IUpdateDepositCondition
     {

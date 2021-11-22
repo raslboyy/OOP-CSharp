@@ -1,4 +1,4 @@
-using Banks.Entities.BankModule.ConfigurationModule;
+using Banks.Entities.BankModule.BankConfigurationModule;
 
 namespace Banks.Entities.AccountModule
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Banks.Entities.AccountModule;
-using Banks.Entities.BankModule.ConfigurationModule;
+using Banks.Entities.BankModule.BankConfigurationModule;
 
 // Вся внешняя логика проходит через интерфейс IClient либо Билдер
 namespace Banks.Entities.ClientModule

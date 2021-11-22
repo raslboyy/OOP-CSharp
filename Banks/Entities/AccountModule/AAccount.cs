@@ -1,4 +1,4 @@
-using Banks.Entities.BankModule.ConfigurationModule;
+using Banks.Entities.BankModule.BankConfigurationModule;
 
 // Вся внешняя логика проходит через интерфейс IAccount
 namespace Banks.Entities.AccountModule

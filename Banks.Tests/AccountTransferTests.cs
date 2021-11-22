@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Banks.Entities.AccountModule;
 using Banks.Entities.BankModule;
-using Banks.Entities.BankModule.ConfigurationModule;
+using Banks.Entities.BankModule.BankConfigurationModule;
 using Banks.Entities.ClientModule;
 using Banks.Entities.ClientModule.ClientBuilderModule;
 using Banks.Tools;

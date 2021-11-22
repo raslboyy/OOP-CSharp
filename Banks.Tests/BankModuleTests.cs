@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Banks.Entities.BankModule;
-using Banks.Entities.BankModule.ConfigurationModule;
+using Banks.Entities.BankModule.BankConfigurationModule;
 using NUnit.Framework;
 
 namespace Banks.Tests
