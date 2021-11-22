@@ -1,6 +1,6 @@
 namespace Banks.Entities.BankModule.ConfigurationModule
 {
-    public readonly struct DebitCondition
+    public class DebitCondition
     {
         public DebitCondition(double percent)
         {

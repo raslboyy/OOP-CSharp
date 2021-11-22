@@ -1,6 +1,6 @@
 namespace Banks.Entities.BankModule.ConfigurationModule
 {
-    public readonly struct BankConfiguration
+    public class BankConfiguration
     {
         public BankConfiguration(
             CreditCondition creditCondition,

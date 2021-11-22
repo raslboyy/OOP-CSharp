@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Banks.Entities.BankModule.ConfigurationModule
 {
-    public readonly struct DepositCondition
+    public class DepositCondition
     {
         public DepositCondition(List<ValuePercent> percents)
         {
