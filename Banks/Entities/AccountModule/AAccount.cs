@@ -13,7 +13,7 @@ namespace Banks.Entities.AccountModule
             BankConfiguration = bankConfiguration;
             ClientConfiguration = clientConfiguration;
             Id = IdCount++;
-            Percentages = 0;
+            PercentagesValue = 0;
             Age = 0;
             Transfer = new Transfer(this);
         }
@@ -25,7 +25,7 @@ namespace Banks.Entities.AccountModule
         public int Age { get; set; }
         public BankConfiguration BankConfiguration { get; }
         public ClientConfiguration ClientConfiguration { get; }
-        protected double Percentages { get; set; }
+        protected double PercentagesValue { get; set; }
         private static int IdCount { get; set; }
         private Transfer Transfer { get; }
 
@@ -56,7 +56,7 @@ namespace Banks.Entities.AccountModule
         public void Restore(Snapshot snapshot) => Balance += snapshot.Value;
 
         protected abstract void CalculatePercentages();
-        private void ChargePercentages() => Balance += Percentages;
+        private void ChargePercentages() => Balance += PercentagesValue;
 
         public class Snapshot
         {
