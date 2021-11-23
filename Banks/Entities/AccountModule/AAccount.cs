@@ -25,7 +25,7 @@ namespace Banks.Entities.AccountModule
         public int Age { get; set; }
         public BankConfiguration BankConfiguration { get; }
         public ClientConfiguration ClientConfiguration { get; }
-        protected double PercentagesValue { get; set; }
+        public double PercentagesValue { get; set; }
         private static int IdCount { get; set; }
         private Transfer Transfer { get; }
 
@@ -44,7 +44,8 @@ namespace Banks.Entities.AccountModule
             if (n <= 0)
                 throw new AAccountException("N must be positive.");
             Age += n;
-            CalculatePercentages();
+            for (int i = 0; i < n; i++)
+                CalculatePercentages();
             if (Age % 30 == 0)
             {
                 ChargePercentages();
