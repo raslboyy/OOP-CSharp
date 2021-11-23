@@ -17,13 +17,18 @@ namespace Banks.Entities.AccountModule
         {
             if (value > ClientConfiguration.WithdrawalLimit)
                 return false;
-            if (Balance - value - BankConfiguration.CreditCondition.Commission <
-                BankConfiguration.CreditCondition.Limit)
-                return false;
             if (Balance - value >= 0)
+            {
                 Balance -= value;
+            }
             else
+            {
+                if (Balance - value - BankConfiguration.CreditCondition.Commission <
+                    BankConfiguration.CreditCondition.Limit)
+                    return false;
                 Balance -= value + BankConfiguration.CreditCondition.Commission;
+            }
+
             return true;
         }
 
