@@ -33,6 +33,8 @@ namespace Banks.UI.Services
                 case "q":
                 case "quit":
                     return new QuitCommand(_userInterface);
+                case "?":
+                    return new HelpCommand(_userInterface);
                 default:
                     return new UnknownCommand(_userInterface);
             }

@@ -10,8 +10,6 @@ namespace Banks
         {
             var service = new BanksService(new ConsoleUserInterface());
             service.Run();
-
-            Console.ReadLine();
         }
     }
 }
