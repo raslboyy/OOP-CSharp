@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Banks.Tools;
 
 namespace Banks.Entities.BankModule.BankConfigurationModule
 {
@@ -10,6 +12,12 @@ namespace Banks.Entities.BankModule.BankConfigurationModule
         }
 
         public List<ValuePercent> Percents { get; }
-        public void AddValuePercent(double value, double percent) => Percents.Add(new ValuePercent(value, percent));
+        public double GetPercent(double value)
+        {
+            ValuePercent? valuePercent = Percents.FirstOrDefault(item => item.Value > value);
+            if (valuePercent == null)
+                throw new DepositConditionException("Deposit condition is invalid for this value.");
+            return ((ValuePercent)valuePercent).Percent;
+        }
     }
 }

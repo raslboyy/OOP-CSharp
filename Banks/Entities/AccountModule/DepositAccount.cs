@@ -13,9 +13,11 @@ namespace Banks.Entities.AccountModule
             : base(balance, bankConfiguration, clientConfiguration)
         {
             Term = term;
+            Percent = bankConfiguration.DepositCondition.GetPercent(balance);
         }
 
         public int Term { get; }
+        public double Percent { get; }
 
         public override bool Withdraw(double value)
         {
@@ -27,8 +29,6 @@ namespace Banks.Entities.AccountModule
             return true;
         }
 
-        protected override void CalculatePercentages()
-        {
-        }
+        protected override void CalculatePercentages() => PercentagesValue += Balance * Percent;
     }
 }
