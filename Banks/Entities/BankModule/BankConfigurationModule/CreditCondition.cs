@@ -10,7 +10,13 @@ namespace Banks.Entities.BankModule.BankConfigurationModule
 
         public double Limit { get; private set; }
         public double Commission { get; private set; }
-        public void UpdateLimit(double value) => Limit = value;
+        internal Subscribers LimitSubscribers { get; } = new Subscribers();
+
+        public void UpdateLimit(double value)
+        {
+            Limit = value;
+            LimitSubscribers.Notify();
+        }
 
         public void UpdateCommission(double value) => Commission = value;
     }
