@@ -20,7 +20,10 @@ namespace Banks.Entities.AccountModule
             if (Balance - value - BankConfiguration.CreditCondition.Commission <
                 BankConfiguration.CreditCondition.Limit)
                 return false;
-            Balance -= value + BankConfiguration.CreditCondition.Commission;
+            if (Balance - value >= 0)
+                Balance -= value;
+            else
+                Balance -= value + BankConfiguration.CreditCondition.Commission;
             return true;
         }
 
