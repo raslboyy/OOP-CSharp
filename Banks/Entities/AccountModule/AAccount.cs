@@ -56,7 +56,12 @@ namespace Banks.Entities.AccountModule
         public void Restore(Snapshot snapshot) => Balance += snapshot.Value;
 
         protected abstract void CalculatePercentages();
-        private void ChargePercentages() => Balance += PercentagesValue;
+
+        private void ChargePercentages()
+        {
+            Balance += PercentagesValue;
+            PercentagesValue = 0;
+        }
 
         public class Snapshot
         {
