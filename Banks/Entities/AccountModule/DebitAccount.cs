@@ -11,8 +11,10 @@ namespace Banks.Entities.AccountModule
             ClientConfiguration clientConfiguration)
             : base(balance, bankConfiguration, clientConfiguration)
         {
+            Percent = BankConfiguration.DebitCondition.Percent / 365;
         }
 
+        public double Percent { get; }
         public override bool Withdraw(double value)
         {
             if (value > ClientConfiguration.WithdrawalLimit)
@@ -24,6 +26,6 @@ namespace Banks.Entities.AccountModule
         }
 
         protected override void CalculatePercentages() =>
-            PercentagesValue += Balance * BankConfiguration.DebitCondition.Percent;
+            PercentagesValue += Balance * Percent;
     }
 }

@@ -13,7 +13,7 @@ namespace Banks.Entities.AccountModule
             : base(balance, bankConfiguration, clientConfiguration)
         {
             Term = term;
-            Percent = bankConfiguration.DepositCondition.GetPercent(balance);
+            Percent = bankConfiguration.DepositCondition.GetPercent(balance) / 365;
         }
 
         public int Term { get; }
