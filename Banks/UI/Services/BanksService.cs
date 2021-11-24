@@ -35,6 +35,8 @@ namespace Banks.UI.Services
                     return new QuitCommand(_userInterface);
                 case "?":
                     return new HelpCommand(_userInterface);
+                case "add bank":
+                    return new AddBankCommand(_userInterface);
                 default:
                     return new UnknownCommand(_userInterface);
             }
