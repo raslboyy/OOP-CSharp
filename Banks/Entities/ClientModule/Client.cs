@@ -29,6 +29,8 @@ namespace Banks.Entities.ClientModule
             set => _isGood = value;
         }
 
+        public bool IsNotified { get; set; }
+
         public BankConfiguration Configuration { get; set; }
         private List<AAccount> Accounts { get; } = new List<AAccount>();
 

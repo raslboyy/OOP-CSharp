@@ -5,11 +5,12 @@ namespace Banks.Entities.BankModule.BankConfigurationModule
 {
     public class Subscribers
     {
-        private List<IClientManager> Clients { get; }
-        public void Add(IClientManager client) => Clients.Add(client);
+        private readonly List<IClientManager> _clients = new List<IClientManager>();
+        public void Add(IClientManager client) => _clients.Add(client);
 
         public void Notify()
         {
+            _clients.ForEach(client => client.IsNotified = true);
         }
     }
 }
