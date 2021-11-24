@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Banks.Entities.AccountModule;
 using Banks.Entities.BankModule.BankConfigurationModule;
-using Banks.Tools;
 
 namespace Banks.Entities.BankModule
 {
@@ -14,7 +13,6 @@ namespace Banks.Entities.BankModule
 
         private static CentralBank Instance { get; set; }
         private static List<IBankManager> Banks { get; } = new List<IBankManager>();
-        private static int DaysCount { get; set; }
 
         public static CentralBank GetInstance() => Instance ??= new CentralBank();
 
@@ -24,6 +22,8 @@ namespace Banks.Entities.BankModule
             Banks.Add(bank);
             return bank;
         }
+
+        public static IBank FindBank(string name) => Banks.FirstOrDefault(bank => bank.Name == name);
 
         public static AAccount FindAccount(int id)
         {
