@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Banks.Entities.AccountModule;
@@ -12,12 +13,14 @@ namespace Banks.Entities.BankModule
         }
 
         private static CentralBank Instance { get; set; }
-        private static List<IBankManager> Banks { get; } = new List<IBankManager>();
+        private static List<IBankManager> Banks { get; } = new ();
 
         public static CentralBank GetInstance() => Instance ??= new CentralBank();
 
         public static IBank RegisterBank(string name, BankConfiguration configuration)
         {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
             var bank = new Bank(name, configuration);
             Banks.Add(bank);
             return bank;

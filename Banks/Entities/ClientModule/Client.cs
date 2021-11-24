@@ -5,7 +5,6 @@ using Banks.Entities.BankModule.BankConfigurationModule;
 using Banks.Entities.ClientModule.ClientConfigurationModule;
 using Banks.Entities.NotifyModule;
 
-// Вся внешняя логика проходит через интерфейс IClient либо Билдер
 namespace Banks.Entities.ClientModule
 {
     public class Client : IClient, IClientManager
@@ -13,9 +12,7 @@ namespace Banks.Entities.ClientModule
         private bool _isGood;
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
         public string Address { get; set; }
-
         public string Passport { get; set; }
 
         public bool IsGood

@@ -4,7 +4,7 @@ namespace Banks.Entities.ClientModule.ClientBuilderModule
 {
     public class ClientBuilder
     {
-        internal Client Client { get; set; } = new Client();
+        internal Client Client { get; } = new ();
 
         public Client GetResult()
         {

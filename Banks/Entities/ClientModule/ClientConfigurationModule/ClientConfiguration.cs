@@ -1,10 +1,11 @@
-using Banks.Entities.BankModule.BankConfigurationModule;
+using System;
 
 namespace Banks.Entities.ClientModule.ClientConfigurationModule
 {
     public class ClientConfiguration
     {
-        public ClientConfiguration(IClientManager client) => Client = client;
+        public ClientConfiguration(IClientManager client) =>
+            Client = client ?? throw new ArgumentNullException(nameof(client));
 
         public double TransferLimit =>
             Client.IsGood

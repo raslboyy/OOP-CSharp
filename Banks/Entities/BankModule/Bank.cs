@@ -6,7 +6,7 @@ using Banks.Entities.ClientModule.ClientBuilderModule;
 
 namespace Banks.Entities.BankModule
 {
-    public class Bank : IBank, IBankManager
+    public class Bank : IBankManager
     {
         public Bank(string name, BankConfiguration configuration)
         {

@@ -63,7 +63,7 @@ namespace Banks.Tests
             double startValue = account.Balance;
 
             const double value = 1000;
-            ((AAccount) account).Age = 12;
+            CentralBank.SkipDays(12);
             bool actual = account.Withdraw(value);
 
             Assert.AreEqual(true, actual);

@@ -6,7 +6,7 @@ namespace Banks.Entities.ClientModule
 {
     public class ClientsStorage
     {
-        private List<IClientManager> Clients { get; } = new List<IClientManager>();
+        private List<IClientManager> Clients { get; } = new ();
         public void AddClient(Client client) => Clients.Add(client);
 
         public AAccount FindAccount(int id)

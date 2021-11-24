@@ -14,7 +14,8 @@ namespace Banks.Entities.AccountModule
             Percent = BankConfiguration.DebitCondition.Percent / 365;
         }
 
-        public double Percent { get; }
+        private double Percent { get; }
+
         public override bool Withdraw(double value)
         {
             if (value > ClientConfiguration.WithdrawalLimit)

@@ -1,3 +1,4 @@
+using System;
 using Banks.Entities.BankModule.BankConfigurationModule.AccountConditionModule;
 using Banks.Entities.BankModule.BankConfigurationModule.CreditConditionModule;
 using Banks.Entities.BankModule.BankConfigurationModule.DebitConditionModule;
@@ -13,10 +14,10 @@ namespace Banks.Entities.BankModule.BankConfigurationModule
             DepositCondition depositCondition,
             AccountCondition accountCondition)
         {
-            CreditCondition = creditCondition;
-            DebitCondition = debitCondition;
-            DepositCondition = depositCondition;
-            AccountCondition = accountCondition;
+            CreditCondition = creditCondition ?? throw new ArgumentNullException(nameof(creditCondition));
+            DebitCondition = debitCondition ?? throw new ArgumentNullException(nameof(debitCondition));
+            DepositCondition = depositCondition ?? throw new ArgumentNullException(nameof(depositCondition));
+            AccountCondition = accountCondition ?? throw new ArgumentNullException(nameof(accountCondition));
         }
 
         public CreditCondition CreditCondition { get; }

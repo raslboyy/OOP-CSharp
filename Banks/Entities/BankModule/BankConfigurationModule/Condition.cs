@@ -4,7 +4,7 @@ namespace Banks.Entities.BankModule.BankConfigurationModule
 {
     public class Condition<T>
     {
-        private readonly Subscribers _subscribers = new Subscribers();
+        private readonly Subscribers _subscribers = new ();
         private T _value;
 
         public Condition(T value)

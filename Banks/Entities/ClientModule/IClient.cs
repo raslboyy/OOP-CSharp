@@ -5,13 +5,13 @@ namespace Banks.Entities.ClientModule
 {
     public interface IClient
     {
-        public string Address { get; set; }
-        public string Passport { get; set; }
-        public bool IsGood { get; }
-        public bool IsNotified { get; }
-        public IAccount CreateDebitAccount(double value);
-        public IAccount CreateDepositAccount(double value, int term);
-        public IAccount CreateCreditAccount(double value);
-        public void Subscribe(INotification notification);
+        string Address { get; set; }
+        string Passport { get; set; }
+        bool IsGood { get; }
+        bool IsNotified { get; }
+        IAccount CreateDebitAccount(double value);
+        IAccount CreateDepositAccount(double value, int term);
+        IAccount CreateCreditAccount(double value);
+        void Subscribe(INotification notification);
     }
 }

@@ -16,8 +16,8 @@ namespace Banks.Entities.AccountModule
             Percent = bankConfiguration.DepositCondition.GetPercent(balance) / 365;
         }
 
-        public int Term { get; }
-        public double Percent { get; }
+        private int Term { get; }
+        private double Percent { get; }
 
         public override bool Withdraw(double value)
         {

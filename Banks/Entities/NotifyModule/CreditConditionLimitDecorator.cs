@@ -2,7 +2,7 @@ using Banks.Entities.ClientModule;
 
 namespace Banks.Entities.NotifyModule
 {
-    public class CreditConditionLimitDecorator : NotificationDecorator, INotification
+    public class CreditConditionLimitDecorator : NotificationDecorator
     {
         public CreditConditionLimitDecorator(INotification wrappee)
             : base(wrappee)

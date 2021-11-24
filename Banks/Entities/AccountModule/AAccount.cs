@@ -1,8 +1,8 @@
+using System;
 using Banks.Entities.BankModule.BankConfigurationModule;
 using Banks.Entities.ClientModule.ClientConfigurationModule;
 using Banks.Tools;
 
-// Вся внешняя логика проходит через интерфейс IAccount
 namespace Banks.Entities.AccountModule
 {
     public abstract class AAccount : IAccount
@@ -10,8 +10,8 @@ namespace Banks.Entities.AccountModule
         protected AAccount(double balance, BankConfiguration bankConfiguration, ClientConfiguration clientConfiguration)
         {
             Balance = balance;
-            BankConfiguration = bankConfiguration;
-            ClientConfiguration = clientConfiguration;
+            BankConfiguration = bankConfiguration ?? throw new ArgumentNullException(nameof(bankConfiguration));
+            ClientConfiguration = clientConfiguration ?? throw new ArgumentNullException(nameof(clientConfiguration));
             Id = IdCount++;
             PercentagesValue = 0;
             Age = 0;
@@ -20,12 +20,10 @@ namespace Banks.Entities.AccountModule
 
         public int Id { get; }
         public double Balance { get; protected set; }
-
-        // public set for tests (to correct)
-        public int Age { get; set; }
-        public BankConfiguration BankConfiguration { get; }
+        public int Age { get; private set; }
         public ClientConfiguration ClientConfiguration { get; }
-        public double PercentagesValue { get; set; }
+        public double PercentagesValue { get; protected set; }
+        protected BankConfiguration BankConfiguration { get; }
         private static int IdCount { get; set; }
         private Transfer Transfer { get; }
 

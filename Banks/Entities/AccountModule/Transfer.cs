@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Banks.Entities.BankModule;
 using Banks.Tools;
@@ -8,7 +9,7 @@ namespace Banks.Entities.AccountModule
     {
         public Transfer(AAccount account)
         {
-            Account = account;
+            Account = account ?? throw new ArgumentNullException(nameof(account));
         }
 
         private AAccount Account { get; }
