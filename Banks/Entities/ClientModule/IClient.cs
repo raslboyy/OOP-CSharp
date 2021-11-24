@@ -1,4 +1,5 @@
 using Banks.Entities.AccountModule;
+using Banks.Entities.NotifyModule;
 
 namespace Banks.Entities.ClientModule
 {
@@ -10,5 +11,6 @@ namespace Banks.Entities.ClientModule
         public IAccount CreateDebitAccount(double value);
         public IAccount CreateDepositAccount(double value, int term);
         public IAccount CreateCreditAccount(double value);
+        public void Subscribe(INotification notification);
     }
 }

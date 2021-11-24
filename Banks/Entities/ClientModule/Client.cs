@@ -3,6 +3,7 @@ using System.Linq;
 using Banks.Entities.AccountModule;
 using Banks.Entities.BankModule.BankConfigurationModule;
 using Banks.Entities.ClientModule.ClientConfigurationModule;
+using Banks.Entities.NotifyModule;
 
 // Вся внешняя логика проходит через интерфейс IClient либо Билдер
 namespace Banks.Entities.ClientModule
@@ -51,6 +52,8 @@ namespace Banks.Entities.ClientModule
             Accounts.Add(account);
             return account;
         }
+
+        public void Subscribe(INotification notification) => notification.Subscribe(this);
 
         public AAccount FindAccount(int id) => Accounts.FirstOrDefault(account => account.Id == id);
         public void SkipDays(int n) => Accounts.ForEach(account => account.SkipDays(n));
