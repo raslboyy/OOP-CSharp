@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Banks.Tools;
 
-namespace Banks.Entities.BankModule.BankConfigurationModule
+namespace Banks.Entities.BankModule.BankConfigurationModule.DepositConditionModule
 {
     public class DepositCondition : IUpdateDepositCondition
     {

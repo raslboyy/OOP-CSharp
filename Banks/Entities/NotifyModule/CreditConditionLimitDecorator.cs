@@ -12,7 +12,7 @@ namespace Banks.Entities.NotifyModule
         public override void Subscribe(IClientManager client)
         {
             base.Subscribe(client);
-            client.Configuration.CreditCondition.LimitSubscribers.Add(client);
+            client.Configuration.CreditCondition.Limit.AddSubscriber(client);
         }
     }
 }

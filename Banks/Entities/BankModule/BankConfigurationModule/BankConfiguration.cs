@@ -1,3 +1,8 @@
+using Banks.Entities.BankModule.BankConfigurationModule.AccountConditionModule;
+using Banks.Entities.BankModule.BankConfigurationModule.CreditConditionModule;
+using Banks.Entities.BankModule.BankConfigurationModule.DebitConditionModule;
+using Banks.Entities.BankModule.BankConfigurationModule.DepositConditionModule;
+
 namespace Banks.Entities.BankModule.BankConfigurationModule
 {
     public class BankConfiguration : IUpdateBankConfiguration

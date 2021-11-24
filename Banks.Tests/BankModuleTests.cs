@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using Banks.Entities.BankModule;
 using Banks.Entities.BankModule.BankConfigurationModule;
+using Banks.Entities.BankModule.BankConfigurationModule.AccountConditionModule;
+using Banks.Entities.BankModule.BankConfigurationModule.CreditConditionModule;
+using Banks.Entities.BankModule.BankConfigurationModule.DebitConditionModule;
+using Banks.Entities.BankModule.BankConfigurationModule.DepositConditionModule;
 using NUnit.Framework;
 
 namespace Banks.Tests

@@ -1,4 +1,4 @@
-namespace Banks.Entities.BankModule.BankConfigurationModule
+namespace Banks.Entities.BankModule.BankConfigurationModule.DebitConditionModule
 {
     public interface IUpdateDebitCondition
     {
