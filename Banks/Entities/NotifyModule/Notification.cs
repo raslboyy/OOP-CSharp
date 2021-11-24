@@ -4,7 +4,7 @@ namespace Banks.Entities.NotifyModule
 {
     public class Notification : INotification
     {
-        public void Subscribe(IClientManager clientManager)
+        public void Subscribe(IClientManager client)
         {
         }
     }

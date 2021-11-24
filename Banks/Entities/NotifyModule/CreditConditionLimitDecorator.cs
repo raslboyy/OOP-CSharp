@@ -9,10 +9,10 @@ namespace Banks.Entities.NotifyModule
         {
         }
 
-        public override void Subscribe(IClientManager clientManager)
+        public override void Subscribe(IClientManager client)
         {
-            base.Subscribe(clientManager);
-            clientManager.Configuration.CreditCondition.LimitSubscribers.Add(clientManager);
+            base.Subscribe(client);
+            client.Configuration.CreditCondition.LimitSubscribers.Add(client);
         }
     }
 }
