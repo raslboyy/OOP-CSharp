@@ -10,7 +10,7 @@ namespace Banks.UI.Services
 
         public void Run()
         {
-            (bool wasSuccessful, bool shouldQuit) response = GetCommand("?").RunCommand();
+            (bool wasSuccessful, bool shouldQuit) response = GetCommand("/help").RunCommand();
 
             while (!response.shouldQuit)
             {
@@ -21,25 +21,22 @@ namespace Banks.UI.Services
 
                 if (!response.wasSuccessful)
                 {
-                    _userInterface.WriteMessage("Enter ? to view options.");
+                    _userInterface.WriteMessage("Enter /help to view options.");
                 }
             }
         }
 
         private ACommand GetCommand(string input)
         {
-            switch (input)
+            return input switch
             {
-                case "q":
-                case "quit":
-                    return new QuitCommand(_userInterface);
-                case "?":
-                    return new HelpCommand(_userInterface);
-                case "add bank":
-                    return new AddBankCommand(_userInterface);
-                default:
-                    return new UnknownCommand(_userInterface);
-            }
+                "/quit" => new QuitCommand(_userInterface),
+                "/add-bank" => new AddBankCommand(_userInterface),
+                "/add-client" => new AddClientCommand(_userInterface),
+                "/banks" => new BanksCommand(_userInterface),
+                "/help" => new HelpCommand(_userInterface),
+                _ => new UnknownCommand(_userInterface)
+            };
         }
     }
 }

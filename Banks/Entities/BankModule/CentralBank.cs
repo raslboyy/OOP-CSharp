@@ -38,5 +38,12 @@ namespace Banks.Entities.BankModule
         {
             Banks.ForEach(bank => bank.SkipDays(n));
         }
+
+        public static string GetBanks()
+        {
+            string banks = string.Empty;
+            Banks.ForEach(bank => banks += bank.Name + " ");
+            return banks;
+        }
     }
 }

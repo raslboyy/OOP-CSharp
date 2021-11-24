@@ -9,7 +9,12 @@ namespace Banks.UI.Commands
 
         protected override bool InternalCommand()
         {
-            Interface.WriteMessage("It's Help.");
+            Interface.WriteMessage("/help\n" +
+                                   "/add-bank\n" +
+                                   "/add-client\n" +
+                                   "/banks\n" +
+                                   "/clients\n" +
+                                   "/quit");
             return true;
         }
     }
