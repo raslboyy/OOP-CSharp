@@ -19,14 +19,14 @@ namespace Backups.Entities
             JobObjects = new JobObjectsStorage(repository);
         }
 
-        public BackupJob(string name, IRepository repository, IStorageAlgorithm storageAlgorithm, RestorePointsStorage restorePointsStorage)
+        protected BackupJob(string name, IRepository repository, IStorageAlgorithm storageAlgorithm, IRestorePointsStorage restorePointsStorage)
             : this(name, repository, storageAlgorithm)
         {
             RestorePoints = restorePointsStorage;
         }
 
         public string Name { get; }
-        public RestorePointsStorage RestorePoints { get; }
+        public IRestorePointsStorage RestorePoints { get; }
         public JobObjectsStorage JobObjects { get; }
 
         public void AddFile(string name) => JobObjects.Add(name);
