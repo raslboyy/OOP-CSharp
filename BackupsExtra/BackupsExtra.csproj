@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tools" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Backups\Backups.csproj" />
   </ItemGroup>
 

@@ -15,9 +15,9 @@ namespace Backups.Entities.RestorePointModule
             RestorePoints = new LinkedList<IRestorePoint>();
         }
 
+        protected LinkedList<IRestorePoint> RestorePoints { get; }
         private IRepository Repository { get; }
         private IStorageAlgorithm StorageAlgorithm { get; }
-        private LinkedList<IRestorePoint> RestorePoints { get; }
 
         public virtual IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {
