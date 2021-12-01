@@ -19,6 +19,12 @@ namespace Backups.Entities
             JobObjects = new JobObjectsStorage(repository);
         }
 
+        public BackupJob(string name, IRepository repository, IStorageAlgorithm storageAlgorithm, RestorePointsStorage restorePointsStorage)
+            : this(name, repository, storageAlgorithm)
+        {
+            RestorePoints = restorePointsStorage;
+        }
+
         public string Name { get; }
         public RestorePointsStorage RestorePoints { get; }
         public JobObjectsStorage JobObjects { get; }

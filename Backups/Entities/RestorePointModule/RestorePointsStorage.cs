@@ -18,7 +18,7 @@ namespace Backups.Entities.RestorePointModule
         private IStorageAlgorithm StorageAlgorithm { get; }
         private List<IRestorePoint> RestorePoints { get; }
 
-        public IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
+        public virtual IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {
             var point = new RestorePoint(jobObjectsStorage, Repository, RestorePoints.Count);
             RestorePoints.Add(point);
