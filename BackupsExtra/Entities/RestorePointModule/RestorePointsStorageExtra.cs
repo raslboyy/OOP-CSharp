@@ -16,5 +16,6 @@ namespace BackupsExtra.Entities.RestorePointModule
         public ILimitAlgorithm LimitAlgorithm { get; private set; }
 
         public void SetMergeLimitAlgorithm() => LimitAlgorithm = new MergeLimitAlgorithm();
+        public void SetDeleteLimitAlgorithm() => LimitAlgorithm = new DeleteLimitAlgorithm();
     }
 }
