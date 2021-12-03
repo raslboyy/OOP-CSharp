@@ -35,14 +35,13 @@ namespace BackupsExtra.Entities.RestorePointModule
                 {
                     point2 = RestorePoints.First.Value;
                     RestorePoints.RemoveFirst();
+                    RestorePoints.AddFirst(LimitAlgorithm.Execute(StorageAlgorithmExtra, RepositoryExtra, point1, point2));
                 }
                 else
                 {
                     point2 = point1;
+                    LimitAlgorithm.Execute(StorageAlgorithmExtra, RepositoryExtra, point1, point2);
                 }
-
-                IRestorePoint result = LimitAlgorithm.Execute(StorageAlgorithmExtra, RepositoryExtra, point1, point2);
-                RestorePoints.AddFirst(result);
             }
 
             return point;

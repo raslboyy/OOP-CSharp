@@ -14,7 +14,7 @@ namespace BackupsExtra.Entities.RestorePointModule
             : base(repository, storageAlgorithm)
         {
             if (limitSize <= 0)
-                throw new RestorePointStorageByNumberException("limitSize must be positive.");
+                throw new RestorePointsStorageByNumberException("limitSize must be positive.");
             LimitSize = limitSize;
         }
 
@@ -25,9 +25,9 @@ namespace BackupsExtra.Entities.RestorePointModule
             IRestorePoint point = base.Add(jobObjectsStorage);
             if (RestorePoints.Count <= LimitSize) return point;
             if (RestorePoints.First == null)
-                throw new RestorePointStorageByNumberException();
+                throw new RestorePointsStorageByNumberException();
             if (RestorePoints.First.Next == null)
-                throw new RestorePointStorageByNumberException();
+                throw new RestorePointsStorageByNumberException();
             IRestorePoint point1 = RestorePoints.First.Value;
             IRestorePoint point2 = RestorePoints.First?.Next?.Value;
             IRestorePoint result = LimitAlgorithm.Execute(StorageAlgorithmExtra, RepositoryExtra, point1, point2);
