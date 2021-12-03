@@ -9,13 +9,42 @@ namespace Backups.Entities.RepositoryModule
 {
     public class LocalRepository : IRepository
     {
-        private const string RootPath = ".backup";
-        private const string JobObjects = "JobObjects";
+        protected const string RootPath = ".backup";
+        protected const string JobObjects = "JobObjects";
 
         public LocalRepository()
         {
             Directory.CreateDirectory(RootPath);
             CreateDirectory(JobObjects);
+        }
+
+        public static void CreateFile(string name)
+        {
+            string path = Path.Combine(RootPath, name);
+            File.Create(path);
+        }
+
+        public static void CreateDirectory(string name)
+        {
+            string path = Path.Combine(RootPath, name);
+            Directory.CreateDirectory(path);
+        }
+
+        public static void CopyFile(string from, string to) => File.Copy(from, to);
+
+        public static void ToZip(IRestorePoint restorePoint, IStorage storage)
+        {
+            string jobObjectPath = Path.Combine(RootPath, JobObjects, storage.JobObject.Name);
+
+            CreateDirectory(Path.Combine(restorePoint.Name, storage.Name));
+            string startPath = Path.Combine(RootPath, restorePoint.Name, storage.Name);
+            string copyPath = Path.Combine(startPath, storage.JobObject.Name);
+            CopyFile(jobObjectPath, copyPath);
+            string zipPath = Path.Combine(RootPath, restorePoint.Name, storage.Name + ".zip");
+
+            ZipFile.CreateFromDirectory(startPath, zipPath);
+            File.Delete(copyPath);
+            Directory.Delete(startPath);
         }
 
         public void AddJobObject(IJobObject jobObject)
@@ -59,35 +88,6 @@ namespace Backups.Entities.RepositoryModule
             string startPath = Path.Combine(RootPath, JobObjects);
             string zipPath = Path.Combine(RootPath, restorePoint.Name + ".zip");
             ZipFile.CreateFromDirectory(startPath, zipPath);
-        }
-
-        private static void CreateFile(string name)
-        {
-            string path = Path.Combine(RootPath, name);
-            File.Create(path);
-        }
-
-        private static void CreateDirectory(string name)
-        {
-            string path = Path.Combine(RootPath, name);
-            Directory.CreateDirectory(path);
-        }
-
-        private static void CopyFile(string from, string to) => File.Copy(from, to);
-
-        private static void ToZip(IRestorePoint restorePoint, IStorage storage)
-        {
-            string jobObjectPath = Path.Combine(RootPath, JobObjects, storage.JobObject.Name);
-
-            CreateDirectory(Path.Combine(restorePoint.Name, storage.Name));
-            string startPath = Path.Combine(RootPath, restorePoint.Name, storage.Name);
-            string copyPath = Path.Combine(startPath, storage.JobObject.Name);
-            CopyFile(jobObjectPath, copyPath);
-            string zipPath = Path.Combine(RootPath, restorePoint.Name, storage.Name + ".zip");
-
-            ZipFile.CreateFromDirectory(startPath, zipPath);
-            File.Delete(copyPath);
-            Directory.Delete(startPath);
         }
     }
 }
