@@ -6,7 +6,7 @@ using Backups.Entities.StorageAlgorithmModule;
 
 namespace Backups.Entities.RestorePointModule
 {
-    public class RestorePointsStorage : IRestorePointsStorage
+    public class RestorePointsStorage
     {
         public RestorePointsStorage(IRepository repository, IStorageAlgorithm storageAlgorithm)
         {

@@ -20,7 +20,7 @@ namespace Backups.Entities
         }
 
         public string Name { get; }
-        public IRestorePointsStorage RestorePoints { get; }
+        public RestorePointsStorage RestorePoints { get; }
         public JobObjectsStorage JobObjects { get; }
 
         public void AddFile(string name) => JobObjects.Add(name);
