@@ -8,6 +8,7 @@ namespace Backups.Entities.RestorePointModule
         DateTime Time { get; }
         string Name { get; }
         IEnumerable<IStorage> GetStorages();
-        bool Contains(string name);
+        bool ContainsJobObject(string name);
+        void AddStorage(IStorage storage);
     }
 }

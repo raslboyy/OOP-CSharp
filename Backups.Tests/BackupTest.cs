@@ -40,8 +40,8 @@ namespace Backups.Tests
             backup.AddFile("file1");
             backup.AddFile("file2");
             string name = backup.CreateRestorePoint();
-            bool actual = backup.RestorePoints.Find(name).Contains("file1") &&
-                          backup.RestorePoints.Find(name).Contains("file2");
+            bool actual = backup.RestorePoints.Find(name).ContainsJobObject("file1") &&
+                          backup.RestorePoints.Find(name).ContainsJobObject("file2");
 
             Assert.AreEqual(true, actual);
         }
@@ -55,9 +55,9 @@ namespace Backups.Tests
             string name1 = backup.CreateRestorePoint();
             backup.AddFile("file2");
             string name2 = backup.CreateRestorePoint();
-            bool actual = backup.RestorePoints.Find(name1).Contains("file1") &&
-                          backup.RestorePoints.Find(name2).Contains("file1") &&
-                          backup.RestorePoints.Find(name2).Contains("file2");
+            bool actual = backup.RestorePoints.Find(name1).ContainsJobObject("file1") &&
+                          backup.RestorePoints.Find(name2).ContainsJobObject("file1") &&
+                          backup.RestorePoints.Find(name2).ContainsJobObject("file2");
 
             Assert.AreEqual(true, actual);
         }
@@ -73,9 +73,9 @@ namespace Backups.Tests
             backup.RemoveFile("file2");
             string name2 = backup.CreateRestorePoint();
             bool actual = (backup.RestorePoints.Find(name1) != null) && (backup.RestorePoints.Find(name2) != null) &&
-                          backup.RestorePoints.Find(name1).Contains("file1") &&
-                          backup.RestorePoints.Find(name1).Contains("file2") &&
-                          backup.RestorePoints.Find(name2).Contains("file1");
+                          backup.RestorePoints.Find(name1).ContainsJobObject("file1") &&
+                          backup.RestorePoints.Find(name1).ContainsJobObject("file2") &&
+                          backup.RestorePoints.Find(name2).ContainsJobObject("file1");
             
             Assert.AreEqual(true, actual);
         }

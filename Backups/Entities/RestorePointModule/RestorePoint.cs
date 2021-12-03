@@ -26,6 +26,7 @@ namespace Backups.Entities.RestorePointModule
         public DateTime Time { get; }
         public string Name { get; }
         public IEnumerable<IStorage> GetStorages() => _storages;
-        public bool Contains(string name) => _storages.Find(item => item.JobObject.Name == name) != null;
+        public bool ContainsJobObject(string name) => _storages.Find(item => item.JobObject.Name == name) != null;
+        public void AddStorage(IStorage storage) => _storages.Add(storage);
     }
 }
