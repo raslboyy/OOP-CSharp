@@ -3,13 +3,14 @@ using Backups.Entities.JobObjectModule;
 using Backups.Entities.RepositoryModule;
 using Backups.Entities.RestorePointModule;
 using Backups.Entities.StorageAlgorithmModule;
+using BackupsExtra.Entities.RepositoryModule;
 using BackupsExtra.Tools;
 
 namespace BackupsExtra.Entities.RestorePointModule
 {
     public class RestorePointsStorageHybridByUnion : RestorePointsStorageExtra
     {
-        public RestorePointsStorageHybridByUnion(IRepository repository, IStorageAlgorithm storageAlgorithm, int limitAge, int limitSize)
+        public RestorePointsStorageHybridByUnion(IRepositoryExtra repository, IStorageAlgorithm storageAlgorithm, int limitAge, int limitSize)
             : base(repository, storageAlgorithm)
         {
             if (LimitAge <= 0)
@@ -44,7 +45,7 @@ namespace BackupsExtra.Entities.RestorePointModule
                     point2 = point1;
                 }
 
-                IRestorePoint result = LimitAlgorithm.Execute(point1, point2);
+                IRestorePoint result = LimitAlgorithm.Execute(RepositoryExtra, point1, point2);
                 RestorePoints.AddFirst(result);
             }
 
