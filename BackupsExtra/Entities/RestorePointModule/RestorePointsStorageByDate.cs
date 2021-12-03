@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Backups.Entities.JobObjectModule;
 using Backups.Entities.RepositoryModule;
 using Backups.Entities.RestorePointModule;
@@ -9,36 +10,30 @@ namespace BackupsExtra.Entities.RestorePointModule
 {
     public class RestorePointsStorageByDate : RestorePointsStorageExtra
     {
-        public RestorePointsStorageByDate(IRepository repository, IStorageAlgorithm storageAlgorithm, int ageLimit)
+        public RestorePointsStorageByDate(IRepository repository, IStorageAlgorithm storageAlgorithm, int limitAge)
             : base(repository, storageAlgorithm)
         {
-            AgeLimit = ageLimit;
-            if (ageLimit <= 0)
+            if (limitAge <= 0)
                 throw new RestorePointsStorageByDateException("ageLimit must be positive.");
+            LimitAge = limitAge;
         }
 
-        public int AgeLimit { get; }
+        public int LimitAge { get; }
 
         public override IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {
             IRestorePoint point = base.Add(jobObjectsStorage);
-            while (RestorePoints.First != null && RestorePoints.First.Value.Time < DateTime.Now.AddDays(-AgeLimit))
             {
-                IRestorePoint point1 = RestorePoints.First.Value;
-                RestorePoints.RemoveFirst();
-                IRestorePoint point2;
-                if (RestorePoints.First != null)
+                LinkedListNode<IRestorePoint> point1 = null;
+                do
                 {
-                    point2 = RestorePoints.First.Value;
+                    LinkedListNode<IRestorePoint> point2 = point1;
+                    point1 = RestorePoints.First;
                     RestorePoints.RemoveFirst();
+                    if (point1 != null && point2 != null)
+                        point1.ValueRef = LimitAlgorithm.Execute(point1.Value, point2.Value);
                 }
-                else
-                {
-                    point2 = point1;
-                }
-
-                IRestorePoint result = LimitAlgorithm.Execute(point1, point2);
-                RestorePoints.AddFirst(result);
+                while (RestorePoints.First != null && RestorePoints.First.Value.Time < DateTime.Now.AddDays(-LimitAge));
             }
 
             return point;
