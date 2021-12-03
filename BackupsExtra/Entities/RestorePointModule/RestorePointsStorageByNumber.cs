@@ -3,13 +3,14 @@ using Backups.Entities.RepositoryModule;
 using Backups.Entities.RestorePointModule;
 using Backups.Entities.StorageAlgorithmModule;
 using BackupsExtra.Entities.RepositoryModule;
+using BackupsExtra.Entities.StorageAlgorithmModule;
 using BackupsExtra.Tools;
 
 namespace BackupsExtra.Entities.RestorePointModule
 {
     public class RestorePointsStorageByNumber : RestorePointsStorageExtra
     {
-        public RestorePointsStorageByNumber(IRepositoryExtra repository, IStorageAlgorithm storageAlgorithm, int limitSize)
+        public RestorePointsStorageByNumber(IRepositoryExtra repository, IStorageAlgorithmExtra storageAlgorithm, int limitSize)
             : base(repository, storageAlgorithm)
         {
             if (limitSize <= 0)
@@ -29,7 +30,7 @@ namespace BackupsExtra.Entities.RestorePointModule
                 throw new RestorePointStorageByNumberException();
             IRestorePoint point1 = RestorePoints.First.Value;
             IRestorePoint point2 = RestorePoints.First?.Next?.Value;
-            IRestorePoint result = LimitAlgorithm.Execute(RepositoryExtra, point1, point2);
+            IRestorePoint result = LimitAlgorithm.Execute(StorageAlgorithmExtra, RepositoryExtra, point1, point2);
             RestorePoints.RemoveFirst();
             RestorePoints.RemoveFirst();
             RestorePoints.AddFirst(result);

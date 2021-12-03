@@ -5,13 +5,14 @@ using Backups.Entities.RepositoryModule;
 using Backups.Entities.RestorePointModule;
 using Backups.Entities.StorageAlgorithmModule;
 using BackupsExtra.Entities.RepositoryModule;
+using BackupsExtra.Entities.StorageAlgorithmModule;
 using BackupsExtra.Tools;
 
 namespace BackupsExtra.Entities.RestorePointModule
 {
     public class RestorePointsStorageByDate : RestorePointsStorageExtra
     {
-        public RestorePointsStorageByDate(IRepositoryExtra repository, IStorageAlgorithm storageAlgorithm, int limitAge)
+        public RestorePointsStorageByDate(IRepositoryExtra repository, IStorageAlgorithmExtra storageAlgorithm, int limitAge)
             : base(repository, storageAlgorithm)
         {
             if (limitAge <= 0)
@@ -40,7 +41,7 @@ namespace BackupsExtra.Entities.RestorePointModule
                     point2 = point1;
                 }
 
-                IRestorePoint result = LimitAlgorithm.Execute(RepositoryExtra, point1, point2);
+                IRestorePoint result = LimitAlgorithm.Execute(StorageAlgorithmExtra, RepositoryExtra, point1, point2);
                 RestorePoints.AddFirst(result);
             }
 
