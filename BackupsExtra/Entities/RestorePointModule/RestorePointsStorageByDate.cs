@@ -23,17 +23,24 @@ namespace BackupsExtra.Entities.RestorePointModule
         public override IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {
             IRestorePoint point = base.Add(jobObjectsStorage);
+
+            while (RestorePoints.First != null && RestorePoints.First.Value.Time < DateTime.Now.AddDays(-LimitAge))
             {
-                LinkedListNode<IRestorePoint> point1 = null;
-                do
+                IRestorePoint point1 = RestorePoints.First.Value;
+                RestorePoints.RemoveFirst();
+                IRestorePoint point2;
+                if (RestorePoints.First != null)
                 {
-                    LinkedListNode<IRestorePoint> point2 = point1;
-                    point1 = RestorePoints.First;
+                    point2 = RestorePoints.First.Value;
                     RestorePoints.RemoveFirst();
-                    if (point1 != null && point2 != null)
-                        point1.ValueRef = LimitAlgorithm.Execute(point1.Value, point2.Value);
                 }
-                while (RestorePoints.First != null && RestorePoints.First.Value.Time < DateTime.Now.AddDays(-LimitAge));
+                else
+                {
+                    point2 = point1;
+                }
+
+                IRestorePoint result = LimitAlgorithm.Execute(point1, point2);
+                RestorePoints.AddFirst(result);
             }
 
             return point;
