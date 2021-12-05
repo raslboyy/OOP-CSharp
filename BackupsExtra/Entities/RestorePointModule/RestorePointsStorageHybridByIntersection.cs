@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Backups.Entities.JobObjectModule;
 using Backups.Entities.RepositoryModule;
 using Backups.Entities.RestorePointModule;
@@ -9,6 +10,7 @@ using BackupsExtra.Tools;
 
 namespace BackupsExtra.Entities.RestorePointModule
 {
+    [DataContract]
     public class RestorePointsStorageHybridByIntersection : RestorePointsStorageExtra
     {
         public RestorePointsStorageHybridByIntersection(IRepositoryExtra repository, IStorageAlgorithmExtra storageAlgorithm, int limitAge, int limitSize)
@@ -22,8 +24,10 @@ namespace BackupsExtra.Entities.RestorePointModule
             LimitSize = limitSize;
         }
 
-        public int LimitAge { get; }
-        public int LimitSize { get; }
+        [DataMember]
+        public int LimitAge { get; private set; }
+        [DataMember]
+        public int LimitSize { get; private set; }
 
         public override IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {

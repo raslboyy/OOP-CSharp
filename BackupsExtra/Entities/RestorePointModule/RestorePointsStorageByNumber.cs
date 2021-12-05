@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.Serialization;
 using Backups.Entities.JobObjectModule;
 using Backups.Entities.RepositoryModule;
 using Backups.Entities.RestorePointModule;
@@ -8,6 +10,7 @@ using BackupsExtra.Tools;
 
 namespace BackupsExtra.Entities.RestorePointModule
 {
+    [DataContract]
     public class RestorePointsStorageByNumber : RestorePointsStorageExtra
     {
         public RestorePointsStorageByNumber(IRepositoryExtra repository, IStorageAlgorithmExtra storageAlgorithm, int limitSize)
@@ -18,7 +21,8 @@ namespace BackupsExtra.Entities.RestorePointModule
             LimitSize = limitSize;
         }
 
-        public int LimitSize { get; }
+        [DataMember]
+        public int LimitSize { get; private set; }
 
         public override IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {

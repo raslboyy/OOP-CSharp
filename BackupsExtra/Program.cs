@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 using BackupsExtra.Entities;
 using BackupsExtra.Entities.RepositoryModule;
 using BackupsExtra.Entities.RestorePointModule;
@@ -27,6 +29,11 @@ namespace BackupsExtra
             backupJob.CreateRestorePoint();
 
             backupJob.Restore(point);
+
+            var ser = new XmlSerializer(typeof(BackupJobExtra));
+            TextWriter writer = new StreamWriter(".config");
+            ser.Serialize(writer, backupJob);
+            writer.Close();
         }
     }
 }

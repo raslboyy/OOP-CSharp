@@ -1,10 +1,11 @@
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.Serialization;
 using Backups.Entities.RepositoryModule;
-using Backups.Entities.RestorePointModule;
 
 namespace BackupsExtra.Entities.RepositoryModule
 {
+    [DataContract]
     public class LocalRepositoryExtra : LocalRepository, IRepositoryExtra
     {
         public void RemoveZip(string path)

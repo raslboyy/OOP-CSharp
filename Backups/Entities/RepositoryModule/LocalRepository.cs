@@ -1,12 +1,14 @@
 using System;
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.Serialization;
 using Backups.Entities.JobObjectModule;
 using Backups.Entities.RestorePointModule;
 using Backups.Tools;
 
 namespace Backups.Entities.RepositoryModule
 {
+    [DataContract]
     public class LocalRepository : IRepository
     {
         protected const string RootPath = ".backup";

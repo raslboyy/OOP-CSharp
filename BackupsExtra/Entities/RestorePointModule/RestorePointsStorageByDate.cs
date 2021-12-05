@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Backups.Entities.JobObjectModule;
 using Backups.Entities.RepositoryModule;
 using Backups.Entities.RestorePointModule;
@@ -10,6 +11,7 @@ using BackupsExtra.Tools;
 
 namespace BackupsExtra.Entities.RestorePointModule
 {
+    [DataContract]
     public class RestorePointsStorageByDate : RestorePointsStorageExtra
     {
         public RestorePointsStorageByDate(IRepositoryExtra repository, IStorageAlgorithmExtra storageAlgorithm, int limitAge)
@@ -20,7 +22,8 @@ namespace BackupsExtra.Entities.RestorePointModule
             LimitAge = limitAge;
         }
 
-        public int LimitAge { get; }
+        [DataMember]
+        public int LimitAge { get; private set; }
 
         public override IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {

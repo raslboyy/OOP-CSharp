@@ -1,11 +1,19 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using Backups.Entities.JobObjectModule;
 using Backups.Entities.RepositoryModule;
 using Backups.Entities.StorageAlgorithmModule;
 
 namespace Backups.Entities.RestorePointModule
 {
+    [DataContract]
+    [KnownType(typeof(LocalRepository))]
+    [KnownType(typeof(MockRepository))]
+    [KnownType(typeof(SingleStorage))]
+    [KnownType(typeof(SplitStorages))]
+    [KnownType(typeof(RestorePoint))]
     public class RestorePointsStorage
     {
         public RestorePointsStorage(IRepository repository, IStorageAlgorithm storageAlgorithm)
@@ -15,9 +23,12 @@ namespace Backups.Entities.RestorePointModule
             RestorePoints = new LinkedList<IRestorePoint>();
         }
 
-        protected LinkedList<IRestorePoint> RestorePoints { get; }
-        private IRepository Repository { get; }
-        private IStorageAlgorithm StorageAlgorithm { get; }
+        [DataMember]
+        protected LinkedList<IRestorePoint> RestorePoints { get; private set; }
+        [DataMember]
+        private IRepository Repository { get; set; }
+        [DataMember]
+        private IStorageAlgorithm StorageAlgorithm { get; set; }
 
         public virtual IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {

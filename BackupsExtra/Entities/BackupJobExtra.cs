@@ -1,10 +1,16 @@
 using System;
+using System.Runtime.Serialization;
 using Backups.Entities.JobObjectModule;
 using Backups.Entities.RepositoryModule;
 using BackupsExtra.Entities.RestorePointModule;
 
 namespace BackupsExtra.Entities
 {
+    [DataContract]
+    [KnownType(typeof(RestorePointsStorageByNumber))]
+    [KnownType(typeof(RestorePointsStorageByDate))]
+    [KnownType(typeof(RestorePointsStorageHybridByIntersection))]
+    [KnownType(typeof(RestorePointsStorageHybridByUnion))]
     public class BackupJobExtra : IBackupJobExtra
     {
         public BackupJobExtra(string name, IRepository repository, IRestorePointsStorageExtra restorePointsStorage)
@@ -16,13 +22,18 @@ namespace BackupsExtra.Entities
             RestorePoints = restorePointsStorage;
         }
 
-        public string Name { get; }
-        public IRestorePointsStorageExtra RestorePoints { get; }
-        public JobObjectsStorage JobObjects { get; }
+        [DataMember]
+        public string Name { get; private set; }
+        [DataMember]
+        public IRestorePointsStorageExtra RestorePoints { get; private set; }
+        [DataMember]
+        public JobObjectsStorage JobObjects { get; private set; }
 
         public void AddFile(string name) => JobObjects.Add(name);
         public bool RemoveFile(string name) => JobObjects.Remove(name);
         public string CreateRestorePoint() => RestorePoints.Add(JobObjects).Name;
-        public void Restore(string restorePointName, string path = null) => RestorePoints.Restore(restorePointName, path);
+
+        public void Restore(string restorePointName, string path = null) =>
+            RestorePoints.Restore(restorePointName, path);
     }
 }

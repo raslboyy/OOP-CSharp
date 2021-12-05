@@ -1,28 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Backups.Entities.RepositoryModule;
 
 namespace Backups.Entities.JobObjectModule
 {
+    [DataContract]
+    [KnownType(typeof(JobObject))]
+    [KnownType(typeof(LocalRepository))]
+    [KnownType(typeof(MockRepository))]
     public class JobObjectsStorage
     {
-        private readonly List<IJobObject> _jobObjects;
-
         public JobObjectsStorage(IRepository repository)
         {
-            _jobObjects = new List<IJobObject>();
+            JobObjects = new List<IJobObject>();
             Repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        private IRepository Repository { get; }
-        public IEnumerable<IJobObject> GetJobObjects() => _jobObjects;
+        [DataMember]
+        private List<IJobObject> JobObjects { get; set; }
+        [DataMember]
+        private IRepository Repository { get; set; }
+        public IEnumerable<IJobObject> GetJobObjects() => JobObjects;
 
         public IJobObject Add(string name)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
             var jobObject = new JobObject(name);
-            _jobObjects.Add(jobObject);
+            JobObjects.Add(jobObject);
             Repository.AddJobObject(jobObject);
             return jobObject;
         }
@@ -33,9 +39,9 @@ namespace Backups.Entities.JobObjectModule
                 throw new ArgumentNullException(nameof(name));
             var jobObject = new JobObject(name);
             Repository.RemoveJobObject(jobObject);
-            return _jobObjects.Remove(jobObject);
+            return JobObjects.Remove(jobObject);
         }
 
-        public bool Contains(string name) => _jobObjects.Find(item => item.Name == name) != null;
+        public bool Contains(string name) => JobObjects.Find(item => item.Name == name) != null;
     }
 }

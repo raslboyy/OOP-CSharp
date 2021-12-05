@@ -1,10 +1,13 @@
+using System;
 using System.IO;
+using System.Runtime.Serialization;
 using Backups.Entities.RestorePointModule;
 using Backups.Entities.StorageAlgorithmModule;
 using BackupsExtra.Entities.RepositoryModule;
 
 namespace BackupsExtra.Entities.StorageAlgorithmModule
 {
+    [DataContract]
     public class SplitStoragesExtra : SplitStorages, IStorageAlgorithmExtra
     {
         public IRestorePoint MergeRestorePoints(IRepositoryExtra repository, IRestorePoint point1, IRestorePoint point2)
