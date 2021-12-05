@@ -16,13 +16,13 @@ namespace BackupsExtra.Entities.StorageAlgorithmModule
                 repository.MoveZip(Path.Combine(point1.Name, storage.Name), Path.Combine(point2.Name, storage.Name));
             }
 
-            repository.RemoveZip(point1.Name);
+            repository.RemoveDirectory(point1.Name);
             return point2;
         }
 
         public void DeleteRestorePoint(IRepositoryExtra repository, IRestorePoint point)
         {
-            repository.RemoveZip(point.Name);
+            repository.RemoveDirectory(point.Name);
         }
 
         public void Restore(IRepositoryExtra repository, IRestorePoint point, string path)

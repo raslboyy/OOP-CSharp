@@ -10,15 +10,21 @@ namespace BackupsExtra
     {
         private static void Main()
         {
+            var storage = new RestorePointsStorageByNumber(new LocalRepositoryExtra(), new SplitStoragesExtra(), 2);
+            storage.SetMergeLimitAlgorithm();
             IBackupJobExtra backupJob = new BackupJobExtra(
                 "backup",
                 new LocalRepositoryExtra(),
-                new RestorePointsStorageByNumber(new LocalRepositoryExtra(), new SingleStorageExtra(), 2));
+                storage);
             backupJob.AddFile("test1");
             backupJob.AddFile("test2");
             string point = backupJob.CreateRestorePoint();
 
-            File.WriteAllText("test1", "fdf");
+            File.Delete("test1");
+            backupJob.RemoveFile("test1");
+
+            point = backupJob.CreateRestorePoint();
+            backupJob.CreateRestorePoint();
 
             backupJob.Restore(point);
         }
