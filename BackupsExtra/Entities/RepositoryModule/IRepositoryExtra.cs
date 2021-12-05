@@ -9,5 +9,7 @@ namespace BackupsExtra.Entities.RepositoryModule
         void RestoreZip(string path);
         void CopyReplaceFile(string fromPath, string toPath);
         void RemoveDirectory(string path);
+        BackupJobExtra Load();
+        void Save(BackupJobExtra backupJobExtra);
     }
 }

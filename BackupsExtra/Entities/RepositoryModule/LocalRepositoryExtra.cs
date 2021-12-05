@@ -1,6 +1,8 @@
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.Serialization;
+using System.Xml;
 using Backups.Entities.RepositoryModule;
 
 namespace BackupsExtra.Entities.RepositoryModule
@@ -39,10 +41,29 @@ namespace BackupsExtra.Entities.RepositoryModule
             DeleteDirectory(path);
         }
 
-        private static void DeleteDirectory(string target_dir)
+        public BackupJobExtra Load()
         {
-            string[] files = Directory.GetFiles(target_dir);
-            string[] dirs = Directory.GetDirectories(target_dir);
+            var serializer = new DataContractSerializer(typeof(BackupJobExtra));
+            var filestream = new FileStream(Path.Combine(RootPath, ".state"), FileMode.Open);
+            var reader = XmlDictionaryReader.CreateTextReader(filestream, new XmlDictionaryReaderQuotas());
+            return (BackupJobExtra)serializer.ReadObject(reader);
+        }
+
+        public void Save(BackupJobExtra backupJobExtra)
+        {
+            var serializer = new DataContractSerializer(typeof(BackupJobExtra));
+            var writer = XmlWriter.Create(Path.Combine(RootPath, ".state"), new XmlWriterSettings
+            {
+                Indent = true,
+            });
+            serializer.WriteObject(writer, backupJobExtra);
+            writer.Close();
+        }
+
+        private static void DeleteDirectory(string targetDir)
+        {
+            string[] files = Directory.GetFiles(targetDir);
+            string[] dirs = Directory.GetDirectories(targetDir);
 
             foreach (string file in files)
             {
@@ -55,7 +76,7 @@ namespace BackupsExtra.Entities.RepositoryModule
                 DeleteDirectory(dir);
             }
 
-            Directory.Delete(target_dir, false);
+            Directory.Delete(targetDir, false);
         }
     }
 }
