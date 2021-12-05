@@ -31,7 +31,7 @@ namespace BackupsExtra.Entities.StorageAlgorithmModule
             foreach (IStorage storage in point.GetStorages())
             {
                 repository.RestoreZip(Path.Combine(point.Name, storage.Name));
-                repository.CopyReplaceFile(Path.Combine(point.Name, storage.Name, storage.Name), Path.Combine(path));
+                repository.CopyReplaceFile(Path.Combine(point.Name, storage.Name, storage.Name), Path.Combine(path, storage.Name));
                 repository.RemoveDirectory(Path.Combine(point.Name, storage.Name));
             }
         }
