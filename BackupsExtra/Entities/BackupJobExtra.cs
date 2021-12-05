@@ -23,5 +23,6 @@ namespace BackupsExtra.Entities
         public void AddFile(string name) => JobObjects.Add(name);
         public bool RemoveFile(string name) => JobObjects.Remove(name);
         public string CreateRestorePoint() => RestorePoints.Add(JobObjects).Name;
+        public void Restore(string restorePointName, string path = null) => RestorePoints.Restore(restorePointName, path);
     }
 }

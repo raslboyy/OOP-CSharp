@@ -8,5 +8,6 @@ namespace BackupsExtra.Entities.StorageAlgorithmModule
     {
         IRestorePoint MergeRestorePoints(IRepositoryExtra repository, IRestorePoint point1, IRestorePoint point2);
         void DeleteRestorePoint(IRepositoryExtra repository, IRestorePoint point);
+        void Restore(IRepositoryExtra repository, IRestorePoint point, string path);
     }
 }

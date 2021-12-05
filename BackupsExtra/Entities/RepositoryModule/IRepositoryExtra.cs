@@ -1,5 +1,4 @@
 using Backups.Entities.RepositoryModule;
-using Backups.Entities.RestorePointModule;
 
 namespace BackupsExtra.Entities.RepositoryModule
 {
@@ -7,5 +6,8 @@ namespace BackupsExtra.Entities.RepositoryModule
     {
         void RemoveZip(string path);
         void MoveZip(string fromPath, string toPath);
+        void RestoreZip(string path);
+        void CopyReplaceFile(string fromPath, string toPath);
+        void RemoveDirectory(string path);
     }
 }

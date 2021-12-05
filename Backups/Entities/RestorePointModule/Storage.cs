@@ -8,7 +8,7 @@ namespace Backups.Entities.RestorePointModule
         public Storage(IJobObject jobObject, IRepository repository, int restorePointId)
         {
             JobObject = jobObject;
-            Name = jobObject.Name + "_" + restorePointId;
+            Name = jobObject.Name;
             repository.UpdateJobObject(jobObject);
         }
 

@@ -1,3 +1,4 @@
+using System.IO;
 using Backups.Entities.RestorePointModule;
 using Backups.Entities.StorageAlgorithmModule;
 using BackupsExtra.Entities.RepositoryModule;
@@ -15,6 +16,18 @@ namespace BackupsExtra.Entities.StorageAlgorithmModule
         public void DeleteRestorePoint(IRepositoryExtra repository, IRestorePoint point)
         {
             repository.RemoveZip(point.Name);
+        }
+
+        public void Restore(IRepositoryExtra repository, IRestorePoint point, string path)
+        {
+            path ??= string.Empty;
+            repository.RestoreZip(point.Name);
+            foreach (IStorage storage in point.GetStorages())
+            {
+                repository.CopyReplaceFile(Path.Combine(point.Name, storage.Name), Path.Combine(path));
+            }
+
+            repository.RemoveDirectory(point.Name);
         }
     }
 }

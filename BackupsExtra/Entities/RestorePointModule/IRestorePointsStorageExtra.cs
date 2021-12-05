@@ -6,5 +6,6 @@ namespace BackupsExtra.Entities.RestorePointModule
     public interface IRestorePointsStorageExtra
     {
         IRestorePoint Add(JobObjectsStorage jobObjectsStorage);
+        void Restore(string name, string path);
     }
 }
