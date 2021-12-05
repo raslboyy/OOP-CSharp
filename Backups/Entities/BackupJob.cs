@@ -29,7 +29,7 @@ namespace Backups.Entities
         public JobObjectsStorage JobObjects { get; private set; }
 
         public void AddFile(string name) => JobObjects.Add(name);
-        public bool RemoveFile(string name) => JobObjects.Remove(name);
+        public void RemoveFile(string name) => JobObjects.Remove(name);
         public string CreateRestorePoint() => RestorePoints.Add(JobObjects).Name;
     }
 }

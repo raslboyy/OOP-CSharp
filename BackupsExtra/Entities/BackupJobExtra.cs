@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using Backups.Entities.JobObjectModule;
-using Backups.Entities.RepositoryModule;
+using BackupsExtra.Entities.LoggerModule;
 using BackupsExtra.Entities.RepositoryModule;
 using BackupsExtra.Entities.RestorePointModule;
 
@@ -13,6 +13,10 @@ namespace BackupsExtra.Entities
     [KnownType(typeof(RestorePointsStorageHybridByIntersection))]
     [KnownType(typeof(RestorePointsStorageHybridByUnion))]
     [KnownType(typeof(LocalRepositoryExtra))]
+    [KnownType(typeof(ConsoleLogger))]
+    [KnownType(typeof(FileLogger))]
+    [KnownType(typeof(PrefixLogger))]
+    [KnownType(typeof(TimeLogger))]
     public class BackupJobExtra : IBackupJobExtra, IDisposable
     {
         private bool disposed = false;
@@ -20,9 +24,10 @@ namespace BackupsExtra.Entities
         public BackupJobExtra(IRepositoryExtra repository)
         : this(repository.Load())
         {
+            Logger.Log("Load backup job");
         }
 
-        public BackupJobExtra(string name, IRepositoryExtra repository, IRestorePointsStorageExtra restorePointsStorage)
+        public BackupJobExtra(string name, IRepositoryExtra repository, IRestorePointsStorageExtra restorePointsStorage, ILogger logger)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             if (repository == null)
@@ -30,6 +35,8 @@ namespace BackupsExtra.Entities
             JobObjects = new JobObjectsStorage(repository);
             RestorePoints = restorePointsStorage;
             RepositoryExtra = repository;
+            Logger = new PrefixLogger(Name, logger);
+            Logger.Log("Create backup job");
         }
 
         public BackupJobExtra(BackupJobExtra other)
@@ -37,6 +44,7 @@ namespace BackupsExtra.Entities
             Name = other.Name;
             RestorePoints = other.RestorePoints;
             JobObjects = other.JobObjects;
+            Logger = other.Logger;
         }
 
         ~BackupJobExtra()
@@ -52,13 +60,33 @@ namespace BackupsExtra.Entities
         public JobObjectsStorage JobObjects { get; private set; }
         [DataMember]
         private IRepositoryExtra RepositoryExtra { get; set; }
+        [DataMember]
+        private ILogger Logger { get; set; }
 
-        public void AddFile(string name) => JobObjects.Add(name);
-        public bool RemoveFile(string name) => JobObjects.Remove(name);
-        public string CreateRestorePoint() => RestorePoints.Add(JobObjects).Name;
+        public void AddFile(string name)
+        {
+            JobObjects.Add(name);
+            Logger.Log($"Add file {name}");
+        }
 
-        public void Restore(string restorePointName, string path = null) =>
+        public void RemoveFile(string name)
+        {
+            JobObjects.Remove(name);
+            Logger.Log($"Remove file {name}");
+        }
+
+        public string CreateRestorePoint()
+        {
+            string name = RestorePoints.Add(JobObjects).Name;
+            Logger.Log($"Create restore point {name}");
+            return Name;
+        }
+
+        public void Restore(string restorePointName, string path = null)
+        {
             RestorePoints.Restore(restorePointName, path);
+            Logger.Log($"Restore {restorePointName}");
+        }
 
         public void Dispose()
         {
@@ -74,6 +102,7 @@ namespace BackupsExtra.Entities
             }
 
             RepositoryExtra.Save(this);
+            Logger.Log("Save backup job");
             disposed = true;
         }
     }
