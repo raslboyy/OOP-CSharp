@@ -19,8 +19,6 @@ namespace BackupsExtra.Entities
     [KnownType(typeof(TimeLogger))]
     public class BackupJobExtra : IBackupJobExtra, IDisposable
     {
-        private bool disposed = false;
-
         public BackupJobExtra(IRepositoryExtra repository)
         : this(repository.Load())
         {
@@ -45,11 +43,6 @@ namespace BackupsExtra.Entities
             RestorePoints = other.RestorePoints;
             JobObjects = other.JobObjects;
             Logger = other.Logger;
-        }
-
-        ~BackupJobExtra()
-        {
-            Dispose(false);
         }
 
         [DataMember]
@@ -90,20 +83,8 @@ namespace BackupsExtra.Entities
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed) return;
-            if (disposing)
-            {
-            }
-
             RepositoryExtra.Save(this);
             Logger.Log("Save backup job");
-            disposed = true;
         }
     }
 }
