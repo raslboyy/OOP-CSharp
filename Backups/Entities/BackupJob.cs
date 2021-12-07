@@ -21,15 +21,20 @@ namespace Backups.Entities
             JobObjects = new JobObjectsStorage(repository);
         }
 
-        [DataMember]
-        public string Name { get; private set; }
-        [DataMember]
-        public RestorePointsStorage RestorePoints { get; private set; }
-        [DataMember]
-        public JobObjectsStorage JobObjects { get; private set; }
+        public BackupJob()
+            : this(null, new LocalRepository(), new SingleStorage())
+        {
+        }
 
-        public void AddFile(string name) => JobObjects.Add(name);
-        public void RemoveFile(string name) => JobObjects.Remove(name);
-        public string CreateRestorePoint() => RestorePoints.Add(JobObjects).Name;
+        [DataMember]
+        public string Name { get; protected set; }
+        [DataMember]
+        public RestorePointsStorage RestorePoints { get; protected set; }
+        [DataMember]
+        public JobObjectsStorage JobObjects { get; protected set; }
+
+        public virtual void AddFile(string name) => JobObjects.Add(name);
+        public virtual void RemoveFile(string name) => JobObjects.Remove(name);
+        public virtual string CreateRestorePoint() => RestorePoints.Add(JobObjects).Name;
     }
 }

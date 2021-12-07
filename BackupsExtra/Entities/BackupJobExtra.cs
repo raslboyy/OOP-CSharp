@@ -1,40 +1,28 @@
 using System;
 using System.Runtime.Serialization;
-using Backups.Entities.JobObjectModule;
+using Backups.Entities;
+using Backups.Entities.RestorePointModule;
 using BackupsExtra.Entities.LoggerModule;
 using BackupsExtra.Entities.RepositoryModule;
 using BackupsExtra.Entities.RestorePointModule;
+using BackupsExtra.Entities.RestorePointModule.LimitAlgorithmModule;
+using BackupsExtra.Entities.StorageAlgorithmModule;
+using BackupsExtra.Tools;
 
 namespace BackupsExtra.Entities
 {
     [DataContract]
-    [KnownType(typeof(RestorePointsStorageByNumber))]
-    [KnownType(typeof(RestorePointsStorageByDate))]
-    [KnownType(typeof(RestorePointsStorageHybridByIntersection))]
-    [KnownType(typeof(RestorePointsStorageHybridByUnion))]
     [KnownType(typeof(LocalRepositoryExtra))]
     [KnownType(typeof(ConsoleLogger))]
     [KnownType(typeof(FileLogger))]
     [KnownType(typeof(PrefixLogger))]
     [KnownType(typeof(TimeLogger))]
-    public class BackupJobExtra : IBackupJobExtra, IDisposable
+    public class BackupJobExtra : BackupJob, IBackupJobExtra, IDisposable
     {
         public BackupJobExtra(IRepositoryExtra repository)
         : this(repository.Load())
         {
             Logger.Log("Load backup job");
-        }
-
-        public BackupJobExtra(string name, IRepositoryExtra repository, IRestorePointsStorageExtra restorePointsStorage, ILogger logger)
-        {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            if (repository == null)
-                throw new ArgumentNullException(nameof(repository));
-            JobObjects = new JobObjectsStorage(repository);
-            RestorePoints = restorePointsStorage;
-            RepositoryExtra = repository;
-            Logger = new PrefixLogger(Name, logger);
-            Logger.Log("Create backup job");
         }
 
         public BackupJobExtra(BackupJobExtra other)
@@ -43,41 +31,54 @@ namespace BackupsExtra.Entities
             RestorePoints = other.RestorePoints;
             JobObjects = other.JobObjects;
             Logger = other.Logger;
+            RepositoryExtra = other.RepositoryExtra;
         }
 
-        [DataMember]
-        public string Name { get; private set; }
-        [DataMember]
-        public IRestorePointsStorageExtra RestorePoints { get; private set; }
-        [DataMember]
-        public JobObjectsStorage JobObjects { get; private set; }
+        public BackupJobExtra(
+            string name,
+            IRepositoryExtra repository,
+            IStorageAlgorithmExtra storageAlgorithm,
+            ILogger logger,
+            ILimitAlgorithm limitAlgorithm)
+            : base(name, repository, storageAlgorithm)
+        {
+            RepositoryExtra = repository;
+            Logger = logger;
+            RestorePoints = new RestorePointsStorageExtra(repository, storageAlgorithm, limitAlgorithm);
+        }
+
         [DataMember]
         private IRepositoryExtra RepositoryExtra { get; set; }
         [DataMember]
+        private IStorageAlgorithmExtra StorageAlgorithmExtra { get; set; }
+        [DataMember]
         private ILogger Logger { get; set; }
 
-        public void AddFile(string name)
+        public override void AddFile(string name)
         {
-            JobObjects.Add(name);
+            base.AddFile(name);
             Logger.Log($"Add file {name}");
         }
 
-        public void RemoveFile(string name)
+        public override void RemoveFile(string name)
         {
-            JobObjects.Remove(name);
+            base.RemoveFile(name);
             Logger.Log($"Remove file {name}");
         }
 
-        public string CreateRestorePoint()
+        public override string CreateRestorePoint()
         {
-            string name = RestorePoints.Add(JobObjects).Name;
+            string name = base.CreateRestorePoint();
             Logger.Log($"Create restore point {name}");
             return Name;
         }
 
         public void Restore(string restorePointName, string path = null)
         {
-            RestorePoints.Restore(restorePointName, path);
+            IRestorePoint point = RestorePoints.Find(restorePointName);
+            if (point == null)
+                throw new BackupJobExtraException("No such restore point exists.");
+            StorageAlgorithmExtra.Restore(RepositoryExtra, point, path);
             Logger.Log($"Restore {restorePointName}");
         }
 

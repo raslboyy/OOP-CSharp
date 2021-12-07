@@ -20,11 +20,11 @@ namespace Backups.Entities.RestorePointModule
         {
             Repository = repository;
             StorageAlgorithm = storageAlgorithm;
-            RestorePoints = new LinkedList<IRestorePoint>();
+            RestorePoints = new List<IRestorePoint>();
         }
 
         [DataMember]
-        protected LinkedList<IRestorePoint> RestorePoints { get; private set; }
+        public List<IRestorePoint> RestorePoints { get; private set; }
         [DataMember]
         private IRepository Repository { get; set; }
         [DataMember]
@@ -33,7 +33,7 @@ namespace Backups.Entities.RestorePointModule
         public virtual IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {
             var point = new RestorePoint(jobObjectsStorage, Repository, RestorePoints.Count);
-            RestorePoints.AddLast(point);
+            RestorePoints.Add(point);
             StorageAlgorithm.SaveRestorePoint(Repository, point);
             return point;
         }
