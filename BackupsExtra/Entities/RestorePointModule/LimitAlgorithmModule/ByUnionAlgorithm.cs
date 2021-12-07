@@ -32,7 +32,7 @@ namespace BackupsExtra.Entities.RestorePointModule.LimitAlgorithmModule
         public void Apply(RestorePointsStorage restorePointsStorage, IRepositoryExtra repository, IStorageAlgorithmExtra storageAlgorithm)
         {
             int number =
-                Math.Max(0, LimitSize - restorePointsStorage.RestorePoints.Count);
+                Math.Max(0, restorePointsStorage.RestorePoints.Count - LimitSize);
             number =
                 Math.Max(number, restorePointsStorage.RestorePoints.Count(point => point.Time < DateTime.Now.AddDays(-LimitAge)));
             PointsDeleteAlgorithm.Apply(restorePointsStorage, number, storageAlgorithm, repository);

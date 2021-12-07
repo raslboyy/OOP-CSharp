@@ -22,7 +22,7 @@ namespace Backups.Entities
         }
 
         public BackupJob()
-            : this(null, new LocalRepository(), new SingleStorage())
+            : this("backup", new LocalRepository(), new SingleStorage())
         {
         }
 

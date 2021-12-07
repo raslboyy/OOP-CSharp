@@ -17,6 +17,9 @@ namespace BackupsExtra.Entities
     [KnownType(typeof(FileLogger))]
     [KnownType(typeof(PrefixLogger))]
     [KnownType(typeof(TimeLogger))]
+    [KnownType(typeof(RestorePointsStorageExtra))]
+    [KnownType(typeof(SingleStorageExtra))]
+    [KnownType(typeof(SplitStoragesExtra))]
     public class BackupJobExtra : BackupJob, IBackupJobExtra, IDisposable
     {
         public BackupJobExtra(IRepositoryExtra repository)
@@ -32,6 +35,7 @@ namespace BackupsExtra.Entities
             JobObjects = other.JobObjects;
             Logger = other.Logger;
             RepositoryExtra = other.RepositoryExtra;
+            StorageAlgorithmExtra = other.StorageAlgorithmExtra;
         }
 
         public BackupJobExtra(
@@ -45,6 +49,7 @@ namespace BackupsExtra.Entities
             RepositoryExtra = repository;
             Logger = logger;
             RestorePoints = new RestorePointsStorageExtra(repository, storageAlgorithm, limitAlgorithm);
+            StorageAlgorithmExtra = storageAlgorithm;
         }
 
         [DataMember]
@@ -70,7 +75,7 @@ namespace BackupsExtra.Entities
         {
             string name = base.CreateRestorePoint();
             Logger.Log($"Create restore point {name}");
-            return Name;
+            return name;
         }
 
         public void Restore(string restorePointName, string path = null)
