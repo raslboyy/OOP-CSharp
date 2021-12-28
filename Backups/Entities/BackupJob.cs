@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Backups.Entities.JobObjectModule;
 using Backups.Entities.RepositoryModule;
 using Backups.Entities.RestorePointModule;
@@ -6,6 +7,7 @@ using Backups.Entities.StorageAlgorithmModule;
 
 namespace Backups.Entities
 {
+    [DataContract]
     public class BackupJob : IBackupJob
     {
         public BackupJob(string name, IRepository repository, IStorageAlgorithm storageAlgorithm)
@@ -19,12 +21,20 @@ namespace Backups.Entities
             JobObjects = new JobObjectsStorage(repository);
         }
 
-        public string Name { get; }
-        public RestorePointsStorage RestorePoints { get; }
-        public JobObjectsStorage JobObjects { get; }
+        public BackupJob()
+            : this("backup", new LocalRepository(), new SingleStorage())
+        {
+        }
 
-        public void AddFile(string name) => JobObjects.Add(name);
-        public bool RemoveFile(string name) => JobObjects.Remove(name);
-        public string CreateRestorePoint() => RestorePoints.Add(JobObjects).Name;
+        [DataMember]
+        public string Name { get; protected set; }
+        [DataMember]
+        public RestorePointsStorage RestorePoints { get; protected set; }
+        [DataMember]
+        public JobObjectsStorage JobObjects { get; protected set; }
+
+        public virtual void AddFile(string name) => JobObjects.Add(name);
+        public virtual void RemoveFile(string name) => JobObjects.Remove(name);
+        public virtual string CreateRestorePoint() => RestorePoints.Add(JobObjects).Name;
     }
 }

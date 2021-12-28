@@ -1,14 +1,17 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Backups.Entities.JobObjectModule
 {
-    public readonly struct JobObject : IJobObject
+    [DataContract]
+    public struct JobObject : IJobObject
     {
         public JobObject(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
-        public string Name { get; }
+        [DataMember]
+        public string Name { get; internal set; }
     }
 }

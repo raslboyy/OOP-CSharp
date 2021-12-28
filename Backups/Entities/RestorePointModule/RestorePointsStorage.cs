@@ -1,10 +1,19 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using Backups.Entities.JobObjectModule;
 using Backups.Entities.RepositoryModule;
 using Backups.Entities.StorageAlgorithmModule;
 
 namespace Backups.Entities.RestorePointModule
 {
+    [DataContract]
+    [KnownType(typeof(LocalRepository))]
+    [KnownType(typeof(MockRepository))]
+    [KnownType(typeof(SingleStorage))]
+    [KnownType(typeof(SplitStorages))]
+    [KnownType(typeof(RestorePoint))]
     public class RestorePointsStorage
     {
         public RestorePointsStorage(IRepository repository, IStorageAlgorithm storageAlgorithm)
@@ -14,11 +23,14 @@ namespace Backups.Entities.RestorePointModule
             RestorePoints = new List<IRestorePoint>();
         }
 
-        private IRepository Repository { get; }
-        private IStorageAlgorithm StorageAlgorithm { get; }
-        private List<IRestorePoint> RestorePoints { get; }
+        [DataMember]
+        public List<IRestorePoint> RestorePoints { get; private set; }
+        [DataMember]
+        private IRepository Repository { get; set; }
+        [DataMember]
+        private IStorageAlgorithm StorageAlgorithm { get; set; }
 
-        public IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
+        public virtual IRestorePoint Add(JobObjectsStorage jobObjectsStorage)
         {
             var point = new RestorePoint(jobObjectsStorage, Repository, RestorePoints.Count);
             RestorePoints.Add(point);
@@ -26,6 +38,6 @@ namespace Backups.Entities.RestorePointModule
             return point;
         }
 
-        public IRestorePoint Find(string name) => RestorePoints.Find(point => point.Name == name);
+        public IRestorePoint Find(string name) => RestorePoints.LastOrDefault(point => point.Name == name);
     }
 }
